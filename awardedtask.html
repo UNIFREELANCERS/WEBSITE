@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awarded Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #f6fafd;
+            --sidebar-bg: #101a4a;
+            --sidebar-accent: #fff;
+            --sidebar-active: #0a0e2a;
+            --sidebar-link: #fff;
+            --sidebar-link-inactive: #bfc8e6;
+            --sidebar-active-bg: #181c4a;
+            --logo-gold: #ffd700;
+            --card-bg: #fff;
+            --header-bg: #fff;
+            --accent: #1a237e;
+            --accent-light: #0070ff;
+            --border: #e3e8f0;
+            --shadow: 0 8px 32px 0 rgba(0,0,0,0.10);
+            --shadow-3d: 0 16px 48px 0 rgba(0,112,255,0.10);
+            --text-main: #222;
+            --text-muted: #888;
+            --status-pending: #23243a;
+            --status-completed: #11c45b;
+            --status-cancelled: #ff3b3b;
+            --action-btn: #ffb300;
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            width: 270px;
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px 0 rgba(0,0,0,0.10);
+            z-index: 20;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            transform: translateZ(20px) skewY(-1deg);
+        }
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 2.1em;
+            font-weight: bold;
+            color: var(--sidebar-accent);
+            padding: 32px 24px 18px 24px;
+            letter-spacing: 1px;
+        }
+        .sidebar .logo img {
+            height: 48px;
+        }
+        .sidebar .section-title {
+            color: var(--sidebar-link-inactive);
+            font-size: 1em;
+            font-weight: 700;
+            padding: 0 24px 18px 24px;
+            letter-spacing: 1px;
+        }
+        .sidebar .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--sidebar-link-inactive);
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 30px 0 0 30px;
+            font-size: 1.08em;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-right: 18px;
+            position: relative;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            background: #fff;
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: 2px 0 10px var(--sidebar-bg);
+            margin-right: 0;
+        }
+        .sidebar .nav-link i {
+            font-size: 1.2em;
+            width: 28px;
+            text-align: center;
+        }
+        .main-area {
+            flex: 1;
+            margin-left: 270px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .topbar {
+            width: 100%;
+            background: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 32px;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .topbar .left {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .topbar .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: var(--text-muted);
+            margin: 0 10px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .topbar .icon-btn:hover {
+            color: var(--accent-light);
+        }
+        .topbar .profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e3e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 18px;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 80vh;
+            margin-top: 32px;
+        }
+        .task-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow-3d);
+            padding: 0 0 32px 0;
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 32px auto;
+            transform: rotateY(-2deg) skewY(-1deg) translateZ(10px);
+            border: 1.5px solid var(--border);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .task-card .header {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--accent);
+            padding: 28px 32px 18px 32px;
+            border-bottom: 1.5px solid var(--border);
+            background: #fafdff;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 2px 8px rgba(0,112,255,0.03);
+        }
+        .task-table-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 32px 0 32px;
+        }
+        .task-table-controls select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 1em;
+            color: var(--text-main);
+            background: #fafdff;
+        }
+        .task-table-controls input[type="search"] {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 1em;
+            background: #fafdff;
+        }
+        .task-table-controls .refresh-btn {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-left: 12px;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: var(--accent);
+            transition: background 0.2s;
+        }
+        .task-table-controls .refresh-btn:hover {
+            background: #e3e8f0;
+        }
+        .task-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 18px;
+        }
+        .task-table th, .task-table td {
+            padding: 14px 10px;
+            text-align: left;
+        }
+        .task-table th {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.08em;
+            background: #fafdff;
+            border-bottom: 1.5px solid var(--border);
+        }
+        .task-table td {
+            color: var(--text-main);
+            font-size: 1em;
+            border-bottom: 1px solid #f6fafd;
+        }
+        .task-table th, .task-table td {
+            min-width: 80px;
+        }
+        .task-row-icon {
+            color: #11c45b;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 22px;
+            border-radius: 18px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #fff;
+            background: var(--status-pending);
+            margin-right: 4px;
+        }
+        .status-completed {
+            background: var(--status-completed) !important;
+        }
+        .status-cancelled {
+            background: var(--status-cancelled) !important;
+        }
+        .action-btn {
+            background: var(--action-btn);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 22px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .action-btn:hover {
+            background: #ffa000;
+            transform: translateY(-2px) scale(1.04);
+        }
+        .footer {
+            width: 100%;
+            text-align: center;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1em;
+            padding: 24px 0 18px 0;
+            background: transparent;
+        }
+        @media (max-width: 1100px) {
+            .sidebar { width: 70px; }
+            .sidebar .logo, .sidebar .section-title, .sidebar .nav-link span { display: none; }
+            .sidebar .nav-link { justify-content: center; padding: 14px 0; }
+            .main-area { margin-left: 70px; }
+        }
+        @media (max-width: 900px) {
+            .task-card { width: 99%; padding: 0 0 18px 0; }
+            .task-card .header, .task-table-controls, .pagination { padding-left: 10px; padding-right: 10px; }
+        }
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar .logo {
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+
+            .sidebar .panel-label {
+                margin: 10px 0 5px 15px;
+                font-size: 0.9rem;
+            }
+
+            .sidebar nav {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .sidebar nav a {
+                padding: 10px 15px;
+                margin: 5px 0;
+                font-size: 0.9rem;
+            }
+
+            .main {
+                margin-top: 60px;
+            }
+
+            .header {
+                height: 60px;
+                padding: 0 15px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.5rem;
+            }
+
+            .header .header-actions {
+                gap: 15px;
+                padding-right: 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 12px;
+            }
+
+            li {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+                padding-left: 20px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .get-started-btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .task-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .task-card {
+                padding: 20px;
+            }
+
+            .task-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .task-info h3 {
+                font-size: 1.2rem;
+            }
+
+            .task-info p {
+                font-size: 0.9rem;
+            }
+
+            .task-details {
+                font-size: 0.9rem;
+            }
+
+            .task-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .action-button {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .sidebar .logo {
+                font-size: 1.1rem;
+            }
+
+            .sidebar nav a {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+
+            .header {
+                height: 50px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.3rem;
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p, li {
+                font-size: 0.85rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+
+            .get-started-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .task-card {
+                padding: 15px;
+            }
+
+            .task-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .task-info p {
+                font-size: 0.85rem;
+            }
+
+            .task-details {
+                font-size: 0.85rem;
+            }
+
+            .action-button {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .search-bar input {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .filter-group label {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.sidebar') && !event.target.closest('.menu-icon')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <span><span style="color:var(--logo-gold);">UNI</span><br><span style="font-size:0.6em;letter-spacing:2px;">FREELANCERS</span></span>
+        </div>
+        <div class="section-title">TRANSCRIBE PANEL</div>
+        <nav class="nav">
+            <a href="medicaltask.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>My dashboard</span></a>
+            <a href="getmin.html" class="nav-link"><i class="fas fa-clock"></i><span>Get Minutes</span></a>
+            <a href="availtask.html" class="nav-link"><i class="fas fa-tasks"></i><span>All Available Tasks</span></a>
+            <a href="awardedtask.html" class="nav-link active"><i class="fas fa-award"></i><span>Awarded Tasks</span></a>
+            <a href="#" class="nav-link"><i class="fas fa-wallet"></i><span>My Payouts</span></a>
+            <a href="#" class="nav-link"><i class="fas fa-user-cog"></i><span>My Profile Settings</span></a>
+            <a href="#" class="nav-link"><i class="fas fa-headset"></i><span>Support Request</span></a>
+            <a href="#" class="nav-link"><i class="fas fa-bell"></i><span>Notifications</span></a>
+        </nav>
+    </div>
+    <div class="main-area">
+        <div class="topbar">
+            <button class="icon-btn"><i class="fas fa-bars"></i></button>
+            <div class="left"></div>
+            <span style="margin-right:18px;font-size:1em;color:#0070ff;font-weight:bold;">Minutes: <span id="user-minutes">0</span></span>
+            <button id="history-btn" style="margin-right:18px;padding:6px 18px;border-radius:6px;border:1px solid #0070ff;background:transparent;color:#0070ff;font-weight:bold;cursor:pointer;">History</button>
+            <button class="icon-btn"><i class="fas fa-bell"></i></button>
+            <button class="icon-btn"><i class="fas fa-expand"></i></button>
+            <div class="profile"><i class="fas fa-user"></i></div>
+        </div>
+        <div id="notification" style="display:none;position:fixed;top:30px;right:30px;z-index:9999;background:#0070ff;color:#fff;padding:18px 32px;border-radius:10px;font-size:1.1em;box-shadow:0 4px 24px rgba(0,0,0,0.15);font-weight:bold;"></div>
+        <div id="history-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9998;align-items:center;justify-content:center;">
+            <div style="background:#fff;color:#222;padding:32px 40px;border-radius:16px;max-width:400px;width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.15);position:relative;">
+                <h3 style="margin-top:0;">Minutes History</h3>
+                <ul id="history-list" style="max-height:300px;overflow-y:auto;padding-left:0;list-style:none;"></ul>
+                <button onclick="document.getElementById('history-modal').style.display='none'" style="margin-top:18px;padding:8px 22px;border-radius:8px;border:none;background:#0070ff;color:#fff;font-weight:bold;cursor:pointer;">Close</button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="task-card">
+                <div class="header">Task List</div>
+                <div class="task-table-controls">
+                    <select>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <div style="flex:1"></div>
+                    <input type="search" placeholder="" />
+                    <button class="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Created On</th>
+                            <th>Status</th>
+                            <th>Duration</th>
+                            <th>Format</th>
+                            <th>Size</th>
+                            <th>Amnt</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="awarded-tasks-body">
+                        <!-- Awarded tasks will be inserted here by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="footer">
+            Copyright © 2025 <span style="color:#222; font-weight:900;">EagleTranscribe.</span>
+        </div>
+    </div>
+<script>
+function statusBadge(status) {
+    if (status === 'Completed') return '<span class="status-badge status-completed">Completed</span>';
+    if (status === 'CANCELLED') return '<span class="status-badge status-cancelled">CANCELLED</span>';
+    return '<span class="status-badge">' + status + '</span>';
+}
+function getUserMinutes() {
+    return parseInt(localStorage.getItem('userMinutes') || '0', 10);
+}
+function setUserMinutes(val) {
+    localStorage.setItem('userMinutes', val);
+    document.getElementById('user-minutes').textContent = val;
+}
+function addHistory(type, amount, desc) {
+    var history = JSON.parse(localStorage.getItem('minutesHistory') || '[]');
+    history.push({type, amount, desc, date: new Date().toLocaleString()});
+    localStorage.setItem('minutesHistory', JSON.stringify(history));
+}
+function showNotification(msg) {
+    var n = document.getElementById('notification');
+    n.textContent = msg;
+    n.style.display = 'block';
+    setTimeout(()=>{n.style.display='none';}, 2500);
+}
+function showHistory() {
+    var modal = document.getElementById('history-modal');
+    var list = document.getElementById('history-list');
+    var history = JSON.parse(localStorage.getItem('minutesHistory') || '[]');
+    list.innerHTML = history.length ? history.map(h=>`<li style='margin-bottom:10px;'>[${h.date}] <b>${h.type}</b>: ${h.amount} min<br><span style='font-size:0.95em;color:#888;'>${h.desc}</span></li>`).reverse().join('') : '<li>No history yet.</li>';
+    modal.style.display = 'flex';
+}
+function renderAwardedTasks() {
+    var awarded = JSON.parse(localStorage.getItem('awardedTasks') || '[]');
+    var tbody = document.getElementById('awarded-tasks-body');
+    tbody.innerHTML = '';
+    if (awarded.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:48px 0;color:#888;font-size:1.2em;">No tasks yet</td></tr>';
+        return;
+    }
+    awarded.forEach(function(task) {
+        tbody.innerHTML += `
+        <tr>
+            <td class="task-row-icon"><i class="fas fa-plus-circle"></i></td>
+            <td>${task.createdOn}</td>
+            <td>${statusBadge(task.status)}</td>
+            <td>${task.duration}</td>
+            <td>${task.format}</td>
+            <td>${task.size}</td>
+            <td>${task.amount}</td>
+            <td><button class="action-btn">View Task</button></td>
+        </tr>
+        `;
+    });
+}
+if (localStorage.getItem('userMinutes') === null) setUserMinutes(20);
+else setUserMinutes(getUserMinutes());
+document.getElementById('history-btn').onclick = showHistory;
+document.getElementById('user-minutes').textContent = getUserMinutes();
+document.addEventListener('DOMContentLoaded', renderAwardedTasks);
+</script>
+</body>
+</html>

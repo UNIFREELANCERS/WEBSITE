@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Reset Password</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #ff0000;
+            --accent-light: #ff3333;
+            --accent-bg: rgba(255, 0, 0, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(255, 0, 0, 0.2);
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: 
+                "sidebar header"
+                "sidebar main";
+        }
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--card-bg);
+            padding: 20px;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-links a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+        .nav-links a i {
+            width: 20px;
+            text-align: center;
+        }
+        .header {
+            grid-area: header;
+            background: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .main-content {
+            grid-area: main;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset-container {
+            grid-column: span 8;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .reset-container h1 {
+            color: var(--accent);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        .reset-container p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+        .reset-btn {
+            background: linear-gradient(135deg, #ff0000 0%, #ff3333 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+        .back-to-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-to-login a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+        }
+        .back-to-login a:hover {
+            color: var(--accent-light);
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+        }
+        @media (max-width: 1200px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "main";
+            }
+            .sidebar {
+                display: none;
+            }
+            .reset-container {
+                grid-column: span 12;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="First.html" class="logo">
+            <img src="C:\Users\Admin\Desktop\cur\ilu.jpg" alt="Best Freelance Services">
+        </a>
+        <nav class="nav-links">
+            <a href="First.html"><i class="fas fa-home"></i> Home</a>
+            <a href="jobs.html"><i class="fas fa-briefcase"></i> Jobs</a>
+            <a href="dash.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+        </nav>
+    </aside>
+
+    <header class="header">
+        <h2>Reset Password</h2>
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <span>Welcome, <span id="username">User</span></span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="reset-container">
+            <h1>Reset Your Password</h1>
+            <p>Enter your email address and we'll send you a link to reset your password.</p>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <button type="submit" class="reset-btn">Send Reset Link</button>
+            </form>
+            <div class="back-to-login">
+                <a href="login.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Load user data
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('username') || 'User';
+            document.getElementById('username').textContent = username;
+        });
+    </script>
+</body>
+</html> 

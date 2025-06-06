@@ -1,0 +1,282 @@
+.education-section {
+    margin-bottom: 40px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 16px;
+        height: 60px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+        font-size: 1.2em;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: var(--card-bg);
+        padding: 16px;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-links.active {
+        display: flex;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .nav-links a:active {
+        transform: scale(0.98);
+        background: var(--accent-bg);
+    }
+
+    .menu-icon {
+        display: block;
+        font-size: 1.4rem;
+        cursor: pointer;
+        color: var(--accent);
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .menu-icon:active {
+        transform: scale(0.95);
+        background: var(--accent-bg);
+    }
+
+    .main-content {
+        margin-top: 70px;
+        padding: 16px;
+    }
+
+    .education-section {
+        margin-bottom: 24px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        margin: 16px 0 12px 0;
+    }
+
+    p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .course-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .course-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .course-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+
+    .course-info p {
+        font-size: 0.95rem;
+    }
+
+    .course-details {
+        font-size: 0.95rem;
+        margin: 12px 0;
+    }
+
+    .course-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .action-button {
+        width: 100%;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 10px;
+    }
+
+    .action-button:active {
+        transform: scale(0.98);
+    }
+
+    .search-bar {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .search-bar input {
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 10px;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-group label {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .filter-group select {
+        padding: 12px;
+        font-size: 0.95rem;
+        border-radius: 8px;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 14px;
+        height: 56px;
+    }
+
+    .logo {
+        font-size: 1.1em;
+    }
+
+    .nav-links {
+        top: 56px;
+        padding: 12px;
+    }
+
+    .nav-links a {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+
+    .menu-icon {
+        font-size: 1.3rem;
+        padding: 6px;
+    }
+
+    .main-content {
+        margin-top: 66px;
+        padding: 12px;
+    }
+
+    .course-card {
+        padding: 16px;
+    }
+
+    .course-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .course-info p {
+        font-size: 0.9rem;
+    }
+
+    .course-details {
+        font-size: 0.9rem;
+        margin: 10px 0;
+    }
+
+    .action-button {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .search-bar input {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+
+    .filter-group label {
+        font-size: 0.9rem;
+    }
+
+    .filter-group select {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape Mode */
+@media (max-height: 500px) and (orientation: landscape) {
+    .nav-links {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuIcon = document.querySelector('.menu-icon');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuIcon.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.navbar')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                navLinks.classList.remove('active');
+            }
+        });
+    });
+</script>
+</head> 

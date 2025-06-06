@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .welcome-subtitle {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .profile-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+            margin-bottom: 32px;
+        }
+
+        .packages-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .packages-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .package-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 12px;
+            right: -35px;
+            background: var(--accent);
+            color: var(--text-main);
+            padding: 4px 40px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 24px;
+        }
+
+        .package-price span {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+
+        .package-features li {
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .package-features li i {
+            color: var(--accent);
+        }
+
+        .package-button {
+            display: inline-block;
+            padding: 12px 32px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .package-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .package-button.disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .membership-status {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 16px;
+            border-radius: 8px;
+            background: var(--accent-bg);
+        }
+
+        .membership-status.active {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4caf50;
+        }
+
+        .membership-status.inactive {
+            background: rgba(255, 87, 34, 0.1);
+            border: 1px solid #ff5722;
+        }
+
+        .membership-status h3 {
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .membership-status p {
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--text-main);
+        }
+
+        .profile-info h2 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .profile-info p {
+            color: var(--text-main);
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .detail-group {
+            margin-bottom: 16px;
+        }
+
+        .detail-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .logout-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logout-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: normal;
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 0;
+                bottom: 0;
+                width: 280px;
+                transform: translateX(0);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(300px);
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .main {
+                padding: 10px;
+                margin-top: 60px;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-value {
+                font-size: 1.8rem;
+            }
+
+            .stat-label {
+                font-size: 0.9rem;
+            }
+
+            .recent-activity {
+                padding: 20px;
+            }
+
+            .activity-item {
+                padding: 15px;
+            }
+
+            .activity-icon {
+                font-size: 1.2rem;
+            }
+
+            .activity-details h3 {
+                font-size: 1rem;
+            }
+
+            .activity-details p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .main {
+                padding: 5px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .recent-activity {
+                padding: 15px;
+            }
+
+            .activity-item {
+                padding: 12px;
+            }
+
+            .activity-icon {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        
+        <div class="logo-text">
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers 
+                    <span>Medical Freelancing Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-hospital"></i> Medical</a>
+                <a href="#"><i class="fas fa-database"></i> Record Keeping</a>
+                <a href="#"><i class="fas fa-gavel"></i> Education</a>
+                <a href="profile.html"><i class="fas fa-graduation-cap"></i> Profile settings</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <section class="welcome-section">
+                    <h1 class="welcome-title">Welcome, <span id="userName">User</span>!</h1>
+                    <p class="welcome-subtitle">Here's an overview of your medical freelancing journey</p>
+                </section>
+                                    
+                <section class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-briefcase-medical"></i>
+                        </div>
+                        <h3 class="card-title">Active Projects</h3>
+                        <div class="card-value" id="activeProjects">0</div>
+                        <p class="card-description">Projects currently in progress</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3 class="card-title">Completed</h3>
+                        <div class="card-value" id="completedProjects">0</div>
+                        <p class="card-description">Successfully completed projects</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="card-title">Rating</h3>
+                        <div class="card-value" id="userRating">0.0</div>
+                        <p class="card-description">Average client rating</p>
+                    </div>
+                </section>
+
+                <section class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="fullName">Loading...</h2>
+                            <p id="professionalTitle">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Email</div>
+                            <div class="detail-value" id="userEmail">Loading...</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Specialization</div>
+                            <div class="detail-value" id="userSpecialization">Loading...</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Experience</div>
+                            <div class="detail-value" id="userExperience">Loading...</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Member Since</div>
+                            <div class="detail-value" id="memberSince">Loading...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="membership-status" id="membershipStatus">
+                    <h3>Membership Status</h3>
+                    <p>Loading...</p>
+                </section>
+
+                <section class="packages-section">
+                    <h2 class="packages-title">Choose Your Package</h2>
+                    <div class="packages-grid">
+                        <div class="package-card">
+                            <h3 class="package-name">Basic</h3>
+                            <div class="package-price">4000<span>/lifetime</span></div>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> Academic Transcription</li>
+                                <li><i class="fas fa-check"></i> Medical Transcription</li>
+                                <li><i class="fas fa-check"></i> Affiliate Marketing</li>
+                                <li><i class="fas fa-check"></i> Standard profile</li>
+                                <li><i class="fas fa-check"></i> Email notifications</li>
+                            </ul>
+                            <button class="package-button" onclick="window.location.href='package-payment.html'">Select Package</button>
+                        </div>
+                        <div class="package-card popular">
+                            <h3 class="package-name">Professional</h3>
+                            <div class="package-price">6000<span>/lifetime</span></div>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> Academic Transcription</li>
+                                <li><i class="fas fa-check"></i> Medical Transcription</li>
+                                <li><i class="fas fa-check"></i> Record Keeping</li>
+                                <li><i class="fas fa-check"></i> Affiliate Marketing</li>
+                                <li><i class="fas fa-check"></i> Standard profile</li>
+                                <li><i class="fas fa-check"></i> Email notifications</li>
+                                <li><i class="fas fa-check"></i> Featured profile</li>
+                                <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            </ul>
+                            <button class="package-button" onclick="window.location.href='package-payment.html'">Select Package</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import userDB from './database.js';
+
+        // Check if user is logged in
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Initialize user metrics
+        function initializeUserMetrics() {
+            const userMetrics = JSON.parse(localStorage.getItem(`userMetrics_${currentUser.id}`)) || {
+                activeProjects: 0,
+                completedProjects: 0,
+                totalRatings: 0,
+                ratingCount: 0
+            };
+            return userMetrics;
+        }
+
+        // Initialize user membership
+        function initializeUserMembership() {
+            const membership = JSON.parse(localStorage.getItem(`membership_${currentUser.id}`)) || {
+                status: 'inactive',
+                package: null,
+                startDate: null,
+                endDate: null
+            };
+            return membership;
+        }
+
+        // Update metrics display
+        function updateMetricsDisplay(metrics) {
+            document.getElementById('activeProjects').textContent = metrics.activeProjects;
+            document.getElementById('completedProjects').textContent = metrics.completedProjects;
+            const averageRating = metrics.ratingCount > 0 ? (metrics.totalRatings / metrics.ratingCount).toFixed(1) : '0.0';
+            document.getElementById('userRating').textContent = averageRating;
+        }
+
+        // Save metrics to localStorage
+        function saveUserMetrics(metrics) {
+            localStorage.setItem(`userMetrics_${currentUser.id}`, JSON.stringify(metrics));
+        }
+
+        // Update membership status display
+        function updateMembershipStatus(membership) {
+            const statusElement = document.getElementById('membershipStatus');
+            const buttons = document.querySelectorAll('.package-button');
+
+            if (membership.status === 'active') {
+                statusElement.className = 'membership-status active';
+                statusElement.innerHTML = `
+                    <h3>Active Membership</h3>
+                    <p>Your ${membership.package} package is active until ${new Date(membership.endDate).toLocaleDateString()}</p>
+                `;
+
+                // Disable buttons for lower tier packages
+                buttons.forEach(button => {
+                    const packageType = button.dataset.package;
+                    if (getPackageTier(packageType) <= getPackageTier(membership.package)) {
+                        button.classList.add('disabled');
+                        button.textContent = 'Current Package';
+                    }
+                });
+            } else {
+                statusElement.className = 'membership-status inactive';
+                statusElement.innerHTML = `
+                    <h3>Inactive Membership</h3>
+                    <p>Select a package to start working on projects</p>
+                `;
+            }
+        }
+
+        // Get package tier for comparison
+        function getPackageTier(packageType) {
+            switch(packageType) {
+                case 'basic': return 1;
+                case 'professional': return 2;
+                case 'enterprise': return 3;
+                default: return 0;
+            }
+        }
+
+        // Handle package selection
+        function handlePackageSelection(packageType) {
+            const membership = initializeUserMembership();
+            
+            if (membership.status === 'active' && getPackageTier(packageType) <= getPackageTier(membership.package)) {
+                alert('You already have an equal or higher tier package active.');
+                return;
+            }
+
+            // Simulate payment process
+            if (confirm(`Would you like to purchase the ${packageType} package?`)) {
+                const startDate = new Date();
+                const endDate = new Date();
+                endDate.setMonth(endDate.getMonth() + 1); // 1 month subscription
+
+                const newMembership = {
+                    status: 'active',
+                    package: packageType,
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString()
+                };
+
+                localStorage.setItem(`membership_${currentUser.id}`, JSON.stringify(newMembership));
+                updateMembershipStatus(newMembership);
+                alert('Package purchased successfully! You can now start working on projects.');
+            }
+        }
+
+        // Add click handlers to package buttons
+        document.querySelectorAll('.package-button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (!button.classList.contains('disabled')) {
+                    handlePackageSelection(button.dataset.package);
+                }
+            });
+        });
+
+        // Initialize metrics for new user
+        let userMetrics = initializeUserMetrics();
+        updateMetricsDisplay(userMetrics);
+
+        // Initialize membership status
+        const membership = initializeUserMembership();
+        updateMembershipStatus(membership);
+
+        // Update user information in the dashboard
+        document.getElementById('userName').textContent = currentUser.firstName;
+        document.getElementById('fullName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+        document.getElementById('professionalTitle').textContent = currentUser.professionalTitle;
+        document.getElementById('userEmail').textContent = currentUser.email;
+        document.getElementById('userSpecialization').textContent = currentUser.specialization;
+
+        // Get full user data from database
+        const fullUserData = userDB.getUserById(currentUser.id);
+        if (fullUserData) {
+            document.getElementById('userExperience').textContent = `${fullUserData.yearsOfExperience} years`;
+            document.getElementById('memberSince').textContent = new Date(fullUserData.registrationDate).toLocaleDateString();
+        }
+
+        // Handle logout
+        document.querySelector('.header-actions .profile').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Add JavaScript for mobile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const sidebar = document.querySelector('.sidebar');
+            const main = document.querySelector('.main');
+
+            menuIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside
+            main.addEventListener('click', function() {
+                if (sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Package Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .header p {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .payment-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .card-header h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .card-price {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .card-price span {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+
+        .features-list li {
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .features-list li i {
+            color: var(--accent);
+        }
+
+        .payment-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid var(--accent);
+            margin-top: 40px;
+        }
+
+        .deposit-info {
+            background: var(--accent-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .deposit-info h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .deposit-info p {
+            margin: 8px 0;
+            color: var(--text-main);
+        }
+
+        .deposit-info .highlight {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .account-balance {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--accent);
+        }
+
+        .account-balance h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .account-balance .balance {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        .balance-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .top-up-button {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-up-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .top-up-button i {
+            font-size: 1rem;
+        }
+
+        .top-up-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .top-up-form.active {
+            display: block;
+        }
+
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .phone-input-group select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+            width: 100px;
+        }
+
+        .phone-input-group input {
+            flex: 1;
+        }
+
+        .stk-push-status {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: var(--accent-bg);
+            display: none;
+        }
+
+        .stk-push-status.active {
+            display: block;
+        }
+
+        .stk-push-status .status-icon {
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+
+        .stk-push-status .status-text {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--accent-bg);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .payment-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+
+        .selected-package {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: normal;
+            display: block;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .payment-card {
+                padding: 20px;
+            }
+
+            .payment-form {
+                padding: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .payment-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .account-balance {
+                padding: 15px;
+            }
+
+            .balance-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .top-up-button {
+                width: 100%;
+            }
+
+            .deposit-info {
+                padding: 15px;
+            }
+
+            .top-up-form {
+                padding: 15px;
+            }
+
+            .phone-input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .country-code {
+                width: 100%;
+            }
+
+            .phone-number {
+                width: 100%;
+            }
+
+            .stk-push-status {
+                padding: 15px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 5px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .payment-card {
+                padding: 15px;
+            }
+
+            .payment-form {
+                padding: 15px;
+            }
+
+            .form-group input {
+                padding: 8px;
+            }
+
+            .payment-button {
+                padding: 10px;
+            }
+
+            .account-balance,
+            .deposit-info,
+            .top-up-form {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="logo.png" alt="UNI PROJECT Logo">
+        <div class="logo-text">
+            UNI PROJECT
+            <span>Medical Freelancing Platform</span>
+        </div>
+    </div>
+    <div class="container">
+        <a href="dash.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+
+        <div class="header">
+            <h1>Complete Your Purchase</h1>
+            <p>Select your preferred package and complete the transaction</p>
+        </div>
+
+        <div class="account-balance">
+            <h3>Your Account Balance</h3>
+            <div class="balance-container">
+                <div class="balance">KES <span id="userBalance">0.00</span></div>
+                <button class="top-up-button" onclick="showTopUpForm()">
+                    <i class="fas fa-plus"></i>
+                    Top Up Balance
+                </button>
+            </div>
+        </div>
+
+        <div class="deposit-info" id="depositInfo" style="display: none;">
+            <h3>Deposit Instructions</h3>
+            <p>To purchase a package, please deposit the required amount using the following details:</p>
+            <p>Paybill Number: <span class="highlight">522522</span></p>
+            <p>Account Number: <span class="highlight">1331994616</span></p>
+            <p>After making the deposit, click the "Verify Deposit" button below.</p>
+        </div>
+
+        <div class="payment-grid">
+            <div class="payment-card" id="basicCard">
+                <div class="card-header">
+                    <h3>Basic Package</h3>
+                    <div class="card-price">4000<span>/lifetime</span></div>
+                </div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> Academic Transcription</li>
+                    <li><i class="fas fa-check"></i> Medical Transcription</li>
+                    <li><i class="fas fa-check"></i> Affiliate Marketing</li>
+                    <li><i class="fas fa-check"></i> Standard profile</li>
+                    <li><i class="fas fa-check"></i> Email notifications</li>
+                </ul>
+                <button class="payment-button" onclick="selectPackage('basic', 4000)">Select Package</button>
+            </div>
+
+            <div class="payment-card" id="professionalCard">
+                <div class="card-header">
+                    <h3>Professional Package</h3>
+                    <div class="card-price">6000<span>/lifetime</span></div>
+                </div>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> All Basic Features</li>
+                    <li><i class="fas fa-check"></i> Priority Support</li>
+                    <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                    <li><i class="fas fa-check"></i> Premium Profile</li>
+                    <li><i class="fas fa-check"></i> 24/7 Support</li>
+                </ul>
+                <button class="payment-button" onclick="selectPackage('professional', 6000)">Select Package</button>
+            </div>
+        </div>
+
+        <div class="payment-form" id="paymentForm" style="display: none;">
+            <h2>Complete Your Purchase</h2>
+            <div class="form-group">
+                <label>Selected Package</label>
+                <input type="text" id="selectedPackage" readonly>
+            </div>
+            <div class="form-group">
+                <label>Package Price</label>
+                <input type="text" id="packagePrice" readonly>
+            </div>
+            <div class="form-group">
+                <label>Your Balance</label>
+                <input type="text" id="currentBalance" readonly>
+            </div>
+            <div class="form-group">
+                <label>Required Top-up</label>
+                <input type="text" id="requiredTopUp" readonly>
+            </div>
+            <div class="top-up-form" id="topUpForm">
+                <h3>Top Up Your Account</h3>
+                <div class="form-group">
+                    <label>Amount to Deposit</label>
+                    <input type="number" id="depositAmount" min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label>M-Pesa Phone Number</label>
+                    <div class="phone-input-group">
+                        <select id="countryCode">
+                            <option value="+254">+254</option>
+                            <option value="+255">+255</option>
+                            <option value="+256">+256</option>
+                            <option value="+257">+257</option>
+                        </select>
+                        <input type="tel" id="phoneNumber" placeholder="7XXXXXXXX" pattern="[0-9]{9}" maxlength="9">
+                    </div>
+                    <small class="form-hint">Enter the phone number registered with M-Pesa</small>
+                </div>
+                <button class="payment-button" onclick="initiateStkPush()" id="stkPushButton">
+                    <span class="button-text">Initiate M-Pesa Payment</span>
+                </button>
+                <div id="stkPushStatus" class="stk-push-status">
+                    <div class="status-header">
+                        <i class="fas fa-mobile-alt status-icon"></i>
+                        <span>STK Push Sent</span>
+                    </div>
+                    <div class="status-text">
+                        Please check your phone and enter your M-Pesa PIN to complete the payment.
+                    </div>
+                </div>
+            </div>
+            <button class="payment-button" onclick="processPayment()" id="purchaseButton" style="display: none;">Purchase Package</button>
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPackage = null;
+        let selectedPrice = 0;
+        let userBalance = 0;
+
+        // Load user balance from localStorage
+        function loadUserBalance() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (currentUser) {
+                userBalance = parseFloat(localStorage.getItem(`balance_${currentUser.id}`)) || 0;
+                document.getElementById('userBalance').textContent = userBalance.toFixed(2);
+                
+                // If balance is low, show a hint
+                if (userBalance < 1000) {
+                    showMessage('Your balance is low. Consider topping up to purchase a package.', 'error');
+                }
+            }
+        }
+
+        // Update user balance
+        function updateUserBalance(amount) {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (currentUser) {
+                userBalance = amount;
+                localStorage.setItem(`balance_${currentUser.id}`, amount);
+                document.getElementById('userBalance').textContent = amount.toFixed(2);
+            }
+        }
+
+        function selectPackage(packageType, price) {
+            selectedPackage = packageType;
+            selectedPrice = price;
+            
+            // Show payment form
+            document.getElementById('paymentForm').style.display = 'block';
+            
+            // Update form fields
+            document.getElementById('selectedPackage').value = packageType.charAt(0).toUpperCase() + packageType.slice(1);
+            document.getElementById('packagePrice').value = `KES ${price.toFixed(2)}`;
+            document.getElementById('currentBalance').value = `KES ${userBalance.toFixed(2)}`;
+            
+            // Calculate required top-up
+            const requiredTopUp = Math.max(0, price - userBalance);
+            document.getElementById('requiredTopUp').value = `KES ${requiredTopUp.toFixed(2)}`;
+            
+            // Show/hide top-up form and purchase button
+            const topUpForm = document.getElementById('topUpForm');
+            const purchaseButton = document.getElementById('purchaseButton');
+            
+            if (requiredTopUp > 0) {
+                topUpForm.classList.add('active');
+                purchaseButton.style.display = 'none';
+            } else {
+                topUpForm.classList.remove('active');
+                purchaseButton.style.display = 'block';
+            }
+        }
+
+        async function initiateStkPush() {
+            const depositAmount = parseFloat(document.getElementById('depositAmount').value);
+            const countryCode = document.getElementById('countryCode').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            if (isNaN(depositAmount) || depositAmount <= 0) {
+                showMessage('Please enter a valid deposit amount', 'error');
+                return;
+            }
+
+            if (!phoneNumber || phoneNumber.length !== 9) {
+                showMessage('Please enter a valid phone number', 'error');
+                return;
+            }
+
+            // Show loading state
+            const button = document.getElementById('stkPushButton');
+            const buttonText = button.querySelector('.button-text');
+            button.disabled = true;
+            buttonText.innerHTML = '<span class="loading-spinner"></span> Initiating payment...';
+
+            try {
+                // Format phone number with country code
+                const formattedPhone = `${countryCode}${phoneNumber}`;
+
+                // Generate timestamp in the required format
+                const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
+
+                // Make the STK Push request
+                const response = await fetch('https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'FPY4tSPZvc8VrAcyJq8uqVSZnDG6NKb0Dasp40sRrx6vdrPy' // Replace with your actual token
+                    },
+                    body: JSON.stringify({
+                        BusinessShortCode: '522522',
+                        Password: 'kU7R6Fz58GI7aTMhy5Vckk9MxPpbBiweXFgKmC5QhM9SvD5XLszHp2W7bvENGbHZ', // Replace with your actual password
+                        Timestamp: timestamp,
+                        TransactionType: 'CustomerPayBillOnline',
+                        Amount: depositAmount,
+                        PartyA: formattedPhone,
+                        PartyB: '522522',
+                        PhoneNumber: formattedPhone,
+                        CallBackURL: 'YOUR_CALLBACK_URL', // Replace with your actual callback URL
+                        AccountReference: '1331994616',
+                        TransactionDesc: 'Account Top Up'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.ResponseCode === '0') {
+                    // Show STK push status
+                    document.getElementById('stkPushStatus').classList.add('active');
+                    
+                    // Start polling for payment status
+                    pollPaymentStatus(data.CheckoutRequestID);
+                } else {
+                    throw new Error(data.ResponseDescription || 'Failed to initiate payment');
+                }
+            } catch (error) {
+                console.error('Payment initiation failed:', error);
+                showMessage('Failed to initiate payment. Please try again.', 'error');
+                
+                // Reset button state
+                button.disabled = false;
+                buttonText.textContent = 'Initiate M-Pesa Payment';
+            }
+        }
+
+        // Function to poll payment status
+        async function pollPaymentStatus(checkoutRequestId) {
+            const maxAttempts = 12; // 1 minute total (5 seconds * 12)
+            let attempts = 0;
+
+            const poll = async () => {
+                try {
+                    const response = await fetch('https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Replace with your actual token
+                        },
+                        body: JSON.stringify({
+                            BusinessShortCode: '522522',
+                            Password: 'YOUR_PASSWORD', // Replace with your actual password
+                            Timestamp: new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3),
+                            CheckoutRequestID: checkoutRequestId
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.ResultCode === '0') {
+                        // Payment successful
+                        const newBalance = userBalance + parseFloat(document.getElementById('depositAmount').value);
+                        updateUserBalance(newBalance);
+                        
+                        // Update the form
+                        document.getElementById('currentBalance').value = `KES ${newBalance.toFixed(2)}`;
+                        const requiredTopUp = Math.max(0, selectedPrice - newBalance);
+                        document.getElementById('requiredTopUp').value = `KES ${requiredTopUp.toFixed(2)}`;
+                        
+                        // Reset button state
+                        const button = document.getElementById('stkPushButton');
+                        const buttonText = button.querySelector('.button-text');
+                        button.disabled = false;
+                        buttonText.textContent = 'Initiate M-Pesa Payment';
+                        
+                        // Hide STK push status
+                        document.getElementById('stkPushStatus').classList.remove('active');
+                        
+                        if (requiredTopUp > 0) {
+                            showMessage('Payment successful! Please top up the remaining amount.', 'success');
+                        } else {
+                            document.getElementById('topUpForm').classList.remove('active');
+                            document.getElementById('purchaseButton').style.display = 'block';
+                            showMessage('Payment successful! You can now purchase the package.', 'success');
+                        }
+                        return;
+                    } else if (data.ResultCode === '1032') {
+                        // Payment cancelled
+                        showMessage('Payment was cancelled. Please try again.', 'error');
+                        return;
+                    }
+
+                    attempts++;
+                    if (attempts < maxAttempts) {
+                        setTimeout(poll, 5000); // Poll every 5 seconds
+                    } else {
+                        showMessage('Payment status check timed out. Please contact support.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Payment status check failed:', error);
+                    showMessage('Failed to check payment status. Please contact support.', 'error');
+                }
+            };
+
+            poll();
+        }
+
+        // Add phone number validation
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+        });
+
+        function processPayment() {
+            if (userBalance < selectedPrice) {
+                showMessage('Insufficient balance. Please top up your account.', 'error');
+                return;
+            }
+
+            // Deduct the package price from balance
+            const newBalance = userBalance - selectedPrice;
+            updateUserBalance(newBalance);
+
+            // Create membership data
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            const membership = {
+                status: 'active',
+                package: selectedPackage,
+                startDate: new Date().toISOString(),
+                endDate: null, // Lifetime membership
+                price: selectedPrice
+            };
+
+            // Save membership to localStorage
+            localStorage.setItem(`membership_${currentUser.id}`, JSON.stringify(membership));
+
+            showMessage('Payment successful! Your membership has been activated.', 'success');
+            
+            // Redirect to appropriate page based on package type
+            setTimeout(() => {
+                if (selectedPackage === 'basic') {
+                    window.location.href = 'activebasicmem.html';
+                } else if (selectedPackage === 'professional') {
+                    window.location.href = 'activepromem.html';
+                }
+            }, 2000);
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showTopUpForm() {
+            // Show deposit info
+            document.getElementById('depositInfo').style.display = 'block';
+            
+            // Scroll to deposit info
+            document.getElementById('depositInfo').scrollIntoView({ behavior: 'smooth' });
+            
+            // If a package is selected, show the top-up form
+            if (selectedPackage) {
+                document.getElementById('topUpForm').classList.add('active');
+            }
+        }
+
+        // Load user balance when page loads
+        document.addEventListener('DOMContentLoaded', loadUserBalance);
+    </script>
+</body>
+</html> 

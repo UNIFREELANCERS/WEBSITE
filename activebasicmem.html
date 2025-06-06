@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Basic Member Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .card-title {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .task-item {
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .task-item:hover {
+            transform: translateX(5px);
+            background: var(--accent);
+        }
+
+        .task-item:hover .task-title,
+        .task-item:hover .task-description {
+            color: var(--text-main);
+        }
+
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .task-details {
+            flex: 1;
+        }
+
+        .task-title {
+            color: var(--accent);
+            margin: 0 0 4px 0;
+            font-weight: 500;
+        }
+
+        .task-description {
+            color: var(--text-main);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .accept-button {
+            background: #4CAF50;
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accept-button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .accept-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .no-tasks {
+            color: var(--text-main);
+            text-align: center;
+            padding: 16px;
+            opacity: 0.7;
+        }
+
+        .error {
+            color: #ff4444;
+            text-align: center;
+            padding: 16px;
+        }
+
+        .completion-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .dialog-content {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            width: 90%;
+            max-width: 600px;
+            border: 2px solid var(--accent);
+        }
+
+        .dialog-content h3 {
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .dialog-content textarea {
+            width: 100%;
+            height: 200px;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            resize: vertical;
+        }
+
+        .dialog-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .dialog-actions button {
+            padding: 8px 24px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dialog-actions button:first-child {
+            background: var(--accent);
+            color: var(--text-main);
+        }
+
+        .dialog-actions button:last-child {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .dialog-actions button:hover {
+            transform: translateY(-2px);
+        }
+
+        .task-priority {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background: #ff4444;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffbb33;
+            color: black;
+        }
+
+        .priority-low {
+            background: #00C851;
+            color: white;
+        }
+
+        .task-deadline {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .deadline-urgent {
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .notification-panel {
+            position: fixed;
+            top: 72px;
+            right: 32px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: none;
+        }
+
+        .notification-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-item:hover {
+            background: var(--accent-bg);
+        }
+
+        .notification-item.unread {
+            background: var(--accent-bg);
+        }
+
+        .notification-title {
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers 
+                    <span>Medical Freelancing Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="transcriptions.html"><i class="fas fa-hospital"></i> Transcription Jobs</a>
+                <a href="contacts.html"><i class="fas fa-database"></i> CONTACTS</a>
+                <a href="profile.html"><i class="fas fa-user"></i> PROFILE</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h2 class="card-title">Available Tasks</h2>
+                        </div>
+                        <div class="task-list" id="availableTasksList">
+                            <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h2 class="card-title">My Tasks</h2>
+                        </div>
+                        <div class="task-list" id="myTasksList">
+                            <!-- Assigned tasks will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TaskManager {
+            constructor() {
+                this.apiUrl = 'http://localhost:1337';
+                this.currentUser = JSON.parse(localStorage.getItem('userData')) || {};
+                this.notifications = [];
+                this.checkDeadlines();
+                this.token = localStorage.getItem('strapiToken');
+                this.checkUserAccess();
+            }
+
+            checkUserAccess() {
+                if (!this.currentUser || !this.token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Check if user has required package
+                const userPackage = this.currentUser.package;
+                if (!userPackage || (userPackage !== 'basic' && userPackage !== 'professional')) {
+                    alert('You need to purchase either Basic or Professional package to access this page.');
+                    window.location.href = 'packages.html';
+                    return;
+                }
+            }
+
+            async login(email, password) {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/auth/local`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            identifier: email,
+                            password: password,
+                        }),
+                    });
+
+                    if (!response.ok) throw new Error('Login failed');
+                    const data = await response.json();
+                    this.token = data.jwt;
+                    this.currentUser = data.user;
+                    localStorage.setItem('strapiToken', this.token);
+                    localStorage.setItem('userData', JSON.stringify(this.currentUser));
+                    return data;
+                } catch (error) {
+                    console.error('Login error:', error);
+                    throw error;
+                }
+            }
+
+            getHeaders() {
+                return {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`,
+                };
+            }
+
+            async getAvailableTasks() {
+                try {
+                    // Add delay for animation effect
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    const response = await fetch(`${this.apiUrl}/api/tasks?filters[status][$eq]=available`, {
+                        headers: this.getHeaders()
+                    });
+                    if (!response.ok) throw new Error('Failed to fetch tasks');
+                    const data = await response.json();
+                    return data.data.map(task => ({
+                        id: task.id,
+                        ...task.attributes,
+                        deadline: new Date(task.attributes.deadline),
+                        priority: task.attributes.priority || 'medium'
+                    }));
+                } catch (error) {
+                    console.error('Error fetching tasks:', error);
+                    throw error;
+                }
+            }
+
+            async getMyTasks() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/tasks?filters[assignedTo][id][$eq]=${this.currentUser.id}`, {
+                        headers: this.getHeaders()
+                    });
+                    if (!response.ok) throw new Error('Failed to fetch my tasks');
+                    const data = await response.json();
+                    return data.data.map(task => ({
+                        id: task.id,
+                        ...task.attributes,
+                        deadline: new Date(task.attributes.deadline),
+                        priority: task.attributes.priority || 'medium'
+                    }));
+                } catch (error) {
+                    console.error('Error fetching my tasks:', error);
+                    throw error;
+                }
+            }
+
+            async acceptTask(taskId) {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: this.getHeaders(),
+                        body: JSON.stringify({
+                            data: {
+                                status: 'assigned',
+                                assignedTo: this.currentUser.id,
+                                assignedAt: new Date().toISOString()
+                            }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to accept task');
+                    const data = await response.json();
+                    const task = data.data;
+                    this.addNotification('Task Accepted', `You have accepted the task: ${task.attributes.title}`);
+                    return task;
+                } catch (error) {
+                    console.error('Error accepting task:', error);
+                    throw error;
+                }
+            }
+
+            async completeTask(taskId, transcription) {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: this.getHeaders(),
+                        body: JSON.stringify({
+                            data: {
+                                status: 'completed',
+                                transcription: transcription,
+                                completedAt: new Date().toISOString()
+                            }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to complete task');
+                    const data = await response.json();
+                    const task = data.data;
+                    this.addNotification('Task Completed', `You have completed the task: ${task.attributes.title}`);
+                    return task;
+                } catch (error) {
+                    console.error('Error completing task:', error);
+                    throw error;
+                }
+            }
+
+            addNotification(title, message) {
+                const notification = {
+                    id: Date.now(),
+                    title,
+                    message,
+                    time: new Date(),
+                    read: false
+                };
+                this.notifications.unshift(notification);
+                this.updateNotificationBadge();
+                this.saveNotifications();
+            }
+
+            updateNotificationBadge() {
+                const unreadCount = this.notifications.filter(n => !n.read).length;
+                const badge = document.querySelector('.notification-badge');
+                if (badge) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+                }
+            }
+
+            saveNotifications() {
+                localStorage.setItem('notifications', JSON.stringify(this.notifications));
+            }
+
+            loadNotifications() {
+                const saved = localStorage.getItem('notifications');
+                if (saved) {
+                    this.notifications = JSON.parse(saved).map(n => ({
+                        ...n,
+                        time: new Date(n.time)
+                    }));
+                    this.updateNotificationBadge();
+                }
+            }
+
+            checkDeadlines() {
+                setInterval(async () => {
+                    const tasks = await this.getMyTasks();
+                    const now = new Date();
+                    tasks.forEach(task => {
+                        if (task.deadline && !task.completedAt) {
+                            const hoursUntilDeadline = (task.deadline - now) / (1000 * 60 * 60);
+                            if (hoursUntilDeadline <= 24 && hoursUntilDeadline > 0) {
+                                this.addNotification(
+                                    'Deadline Approaching',
+                                    `Task "${task.title}" is due in ${Math.round(hoursUntilDeadline)} hours`
+                                );
+                            }
+                        }
+                    });
+                }, 1000 * 60 * 60); // Check every hour
+            }
+        }
+
+        class TaskUI {
+            constructor() {
+                this.taskManager = new TaskManager();
+                this.initializeUI();
+                this.setupNotifications();
+            }
+
+            initializeUI() {
+                this.updateAvailableTasks();
+                this.updateMyTasks();
+                this.taskManager.loadNotifications();
+            }
+
+            setupNotifications() {
+                const bellIcon = document.querySelector('.fa-bell');
+                const notificationPanel = document.createElement('div');
+                notificationPanel.className = 'notification-panel';
+                document.body.appendChild(notificationPanel);
+
+                bellIcon.addEventListener('click', () => {
+                    notificationPanel.style.display = 
+                        notificationPanel.style.display === 'none' ? 'block' : 'none';
+                    this.updateNotificationPanel();
+                });
+
+                // Close panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!notificationPanel.contains(e.target) && 
+                        !bellIcon.contains(e.target)) {
+                        notificationPanel.style.display = 'none';
+                    }
+                });
+            }
+
+            updateNotificationPanel() {
+                const panel = document.querySelector('.notification-panel');
+                if (!panel) return;
+
+                panel.innerHTML = this.taskManager.notifications.map(notification => `
+                    <div class="notification-item ${notification.read ? '' : 'unread'}" 
+                         onclick="taskUI.markNotificationAsRead(${notification.id})">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">
+                            ${this.formatTimeAgo(notification.time)}
+                        </div>
+                    </div>
+                `).join('') || '<div class="notification-item">No notifications</div>';
+            }
+
+            markNotificationAsRead(id) {
+                const notification = this.taskManager.notifications.find(n => n.id === id);
+                if (notification) {
+                    notification.read = true;
+                    this.taskManager.saveNotifications();
+                    this.taskManager.updateNotificationBadge();
+                    this.updateNotificationPanel();
+                }
+            }
+
+            formatTimeAgo(date) {
+                const seconds = Math.floor((new Date() - date) / 1000);
+                if (seconds < 60) return 'just now';
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) return `${minutes}m ago`;
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return `${hours}h ago`;
+                const days = Math.floor(hours / 24);
+                return `${days}d ago`;
+            }
+
+            async updateAvailableTasks() {
+                const tasksList = document.getElementById('availableTasksList');
+                try {
+                    const tasks = await this.taskManager.getAvailableTasks();
+                    if (tasks.length === 0) {
+                        tasksList.innerHTML = '<p class="no-tasks">No available tasks at the moment.</p>';
+                        return;
+                    }
+
+                    tasksList.innerHTML = tasks.map((task, index) => `
+                        <div class="task-item" style="animation-delay: ${index * 0.1}s">
+                            <div class="task-icon">
+                                <i class="fas fa-file-audio"></i>
+                            </div>
+                            <div class="task-details">
+                                <h3 class="task-title">${task.title}</h3>
+                                <p class="task-description">${task.description}</p>
+                                <div class="task-deadline ${this.isDeadlineUrgent(task.deadline) ? 'deadline-urgent' : ''}">
+                                    Due: ${this.formatDeadline(task.deadline)}
+                                </div>
+                            </div>
+                            <span class="task-priority priority-${task.priority}">
+                                ${task.priority.toUpperCase()}
+                            </span>
+                            <button class="accept-button" onclick="taskUI.acceptTask('${task.id}')">
+                                <i class="fas fa-check"></i> Accept Task
+                            </button>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    tasksList.innerHTML = '<p class="error">Error loading tasks</p>';
+                }
+            }
+
+            async updateMyTasks() {
+                const tasksList = document.getElementById('myTasksList');
+                try {
+                    const tasks = await this.taskManager.getMyTasks();
+                    if (tasks.length === 0) {
+                        tasksList.innerHTML = '<p class="no-tasks">You have no assigned tasks.</p>';
+                        return;
+                    }
+
+                    tasksList.innerHTML = tasks.map(task => `
+                        <div class="task-item">
+                            <div class="task-icon">
+                                <i class="fas fa-file-audio"></i>
+                            </div>
+                            <div class="task-details">
+                                <h3 class="task-title">${task.title}</h3>
+                                <p class="task-description">${task.description}</p>
+                                <div class="task-deadline ${this.isDeadlineUrgent(task.deadline) ? 'deadline-urgent' : ''}">
+                                    Due: ${this.formatDeadline(task.deadline)}
+                                </div>
+                            </div>
+                            <span class="task-priority priority-${task.priority}">
+                                ${task.priority.toUpperCase()}
+                            </span>
+                            <button class="accept-button" onclick="taskUI.showCompletionDialog('${task.id}')">
+                                <i class="fas fa-check-circle"></i> Complete
+                            </button>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    tasksList.innerHTML = '<p class="error">Error loading your tasks</p>';
+                }
+            }
+
+            isDeadlineUrgent(deadline) {
+                if (!deadline) return false;
+                const hoursUntilDeadline = (deadline - new Date()) / (1000 * 60 * 60);
+                return hoursUntilDeadline <= 24;
+            }
+
+            formatDeadline(deadline) {
+                if (!deadline) return 'No deadline';
+                const now = new Date();
+                const diff = deadline - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                if (days > 0) return `${days}d ${hours}h remaining`;
+                if (hours > 0) return `${hours}h remaining`;
+                return 'Due now';
+            }
+
+            showCompletionDialog(taskId) {
+                const dialog = document.createElement('div');
+                dialog.className = 'completion-dialog';
+                dialog.innerHTML = `
+                    <div class="dialog-content">
+                        <h3>Complete Task</h3>
+                        <textarea id="transcriptionText" placeholder="Enter transcription here..."></textarea>
+                        <div class="dialog-actions">
+                            <button onclick="taskUI.completeTask('${taskId}')">Submit</button>
+                            <button onclick="this.closest('.completion-dialog').remove()">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(dialog);
+            }
+
+            async completeTask(taskId) {
+                const transcription = document.getElementById('transcriptionText').value;
+                if (!transcription.trim()) {
+                    alert('Please enter the transcription before completing the task.');
+                    return;
+                }
+
+                try {
+                    await this.taskManager.completeTask(taskId, transcription);
+                    document.querySelector('.completion-dialog').remove();
+                    this.updateMyTasks();
+                    alert('Task completed successfully!');
+                } catch (error) {
+                    alert('Error completing task. Please try again.');
+                }
+            }
+        }
+
+        // Initialize the UI when the page loads
+        let taskUI;
+        document.addEventListener('DOMContentLoaded', () => {
+            taskUI = new TaskUI();
+        });
+    </script>
+</body>
+</html>

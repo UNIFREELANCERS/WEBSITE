@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+        }
+
+        .main-content {
+            margin-top: 100px;
+            padding: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .payment-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .balance-display {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            background: var(--accent-bg);
+        }
+
+        .balance-amount {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        .payment-details {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .payment-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .payment-detail-item span:first-child {
+            color: var(--accent-light);
+        }
+
+        .payment-steps {
+            margin-top: 30px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+        }
+
+        .step-number {
+            background: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .step-title {
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .verify-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .verify-button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .verify-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+        }
+
+        .transaction-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1em;
+        }
+
+        .transaction-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-bg);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar .logo {
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+
+            .sidebar .panel-label {
+                margin: 10px 0 5px 15px;
+                font-size: 0.9rem;
+            }
+
+            .sidebar nav {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .sidebar nav a {
+                padding: 10px 15px;
+                margin: 5px 0;
+                font-size: 0.9rem;
+            }
+
+            .main {
+                margin-top: 60px;
+            }
+
+            .header {
+                height: 60px;
+                padding: 0 15px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.5rem;
+            }
+
+            .header .header-actions {
+                gap: 15px;
+                padding-right: 15px;
+            }
+
+            .payment-section {
+                padding: 15px;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .payment-card {
+                padding: 20px;
+            }
+
+            .payment-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .payment-amount {
+                font-size: 1.8rem;
+            }
+
+            .payment-details {
+                font-size: 0.9rem;
+            }
+
+            .payment-form {
+                padding: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .payment-button {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .payment-summary {
+                padding: 15px;
+            }
+
+            .summary-item {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .sidebar .logo {
+                font-size: 1.1rem;
+            }
+
+            .sidebar nav a {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+
+            .header {
+                height: 50px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.3rem;
+            }
+
+            .payment-section {
+                padding: 10px;
+            }
+
+            .payment-card {
+                padding: 15px;
+            }
+
+            .payment-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .payment-amount {
+                font-size: 1.5rem;
+            }
+
+            .payment-details {
+                font-size: 0.85rem;
+            }
+
+            .payment-form {
+                padding: 12px;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .payment-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .payment-summary {
+                padding: 12px;
+            }
+
+            .summary-item {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="First.html" class="logo">
+            <i class="fas fa-file-alt"></i> UNI Transcriptions
+        </a>
+        <div class="nav-links">
+            <a href="First.html">Home</a>
+            <a href="transcriptions.html">Transcriptions</a>
+            <a href="package-upgrade.html">Packages</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="payment-card">
+            <div class="balance-display">
+                <h2>Available Balance</h2>
+                <div class="balance-amount" id="balanceAmount">KSH 0.00</div>
+            </div>
+
+            <div class="payment-details">
+                <h3 style="color: var(--accent); margin-bottom: 20px;">Payment Details</h3>
+                <div class="payment-detail-item">
+                    <span>Paybill Number</span>
+                    <span>522522</span>
+                </div>
+                <div class="payment-detail-item">
+                    <span>Account Number</span>
+                    <span>13314616</span>
+                </div>
+                <div class="payment-detail-item">
+                    <span>Account Name</span>
+                    <span>KCB Kelvin Juma</span>
+                </div>
+            </div>
+
+            <div class="payment-steps">
+                <h3 style="color: var(--accent); margin-bottom: 20px;">How to Make a Payment</h3>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Go to M-PESA</div>
+                        <p>Open your M-PESA menu on your phone</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Select Pay Bill</div>
+                        <p>Choose Pay Bill option from the M-PESA menu</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Enter Business Number</div>
+                        <p>Enter Paybill Number: 522522</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Enter Account Number</div>
+                        <p>Enter Account Number: 13314616</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Enter Amount</div>
+                        <p>Enter the amount you wish to deposit</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-title">Enter M-PESA PIN</div>
+                        <p>Enter your M-PESA PIN to complete the transaction</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verify-section">
+                <h3 style="color: var(--accent); margin-bottom: 20px;">Verify Payment</h3>
+                <input type="text" class="transaction-input" id="transactionCode" placeholder="Enter M-PESA Transaction Code" />
+                <button class="verify-button" onclick="verifyPayment()">Verify Payment</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="payment.js"></script>
+</body>
+</html> 

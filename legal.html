@@ -1,0 +1,392 @@
+.legal-section {
+    margin-bottom: 40px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .sidebar .logo {
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    .sidebar .panel-label {
+        margin: 10px 0 5px 15px;
+        font-size: 0.9rem;
+    }
+
+    .sidebar nav {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .sidebar nav a {
+        padding: 10px 15px;
+        margin: 5px 0;
+        font-size: 0.9rem;
+    }
+
+    .main {
+        margin-top: 60px;
+    }
+
+    .header {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .header .menu-icon {
+        font-size: 1.5rem;
+    }
+
+    .header .header-actions {
+        gap: 15px;
+        padding-right: 15px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .legal-section {
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        margin: 15px 0 10px 0;
+    }
+
+    p {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+
+    ul, ol {
+        padding-left: 20px;
+        margin-bottom: 15px;
+    }
+
+    li {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .legal-nav {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .legal-nav a {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .legal-content {
+        padding: 20px;
+    }
+
+    .legal-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .legal-content p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .sidebar .logo {
+        font-size: 1.1rem;
+    }
+
+    .sidebar nav a {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    .header {
+        height: 50px;
+    }
+
+    .header .menu-icon {
+        font-size: 1.3rem;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .legal-section {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    p {
+        font-size: 0.85rem;
+    }
+
+    li {
+        font-size: 0.85rem;
+    }
+
+    .legal-nav a {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .legal-content {
+        padding: 15px;
+    }
+
+    .legal-content h3 {
+        font-size: 1rem;
+    }
+
+    .legal-content p {
+        font-size: 0.85rem;
+    }
+}
+
+<style>
+    .legal-section {
+        margin-bottom: 40px;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: fixed;
+            top: 0;
+            left: -100%;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar .logo {
+            padding: 15px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar .panel-label {
+            margin: 10px 0 5px 15px;
+            font-size: 0.9rem;
+        }
+
+        .sidebar nav {
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .sidebar nav a {
+            padding: 10px 15px;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .main {
+            margin-top: 60px;
+        }
+
+        .header {
+            height: 60px;
+            padding: 0 15px;
+        }
+
+        .header .menu-icon {
+            font-size: 1.5rem;
+        }
+
+        .header .header-actions {
+            gap: 15px;
+            padding-right: 15px;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+        .legal-section {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin: 15px 0 10px 0;
+        }
+
+        p {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .legal-nav {
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .legal-nav a {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .legal-content {
+            padding: 20px;
+        }
+
+        .legal-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .legal-content p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    }
+
+    /* Small Mobile Devices */
+    @media (max-width: 480px) {
+        .sidebar .logo {
+            font-size: 1.1rem;
+        }
+
+        .sidebar nav a {
+            font-size: 0.85rem;
+            padding: 8px 12px;
+        }
+
+        .header {
+            height: 50px;
+        }
+
+        .header .menu-icon {
+            font-size: 1.3rem;
+        }
+
+        .content {
+            padding: 10px;
+        }
+
+        .legal-section {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.3rem;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+        }
+
+        p {
+            font-size: 0.85rem;
+        }
+
+        li {
+            font-size: 0.85rem;
+        }
+
+        .legal-nav a {
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+
+        .legal-content {
+            padding: 15px;
+        }
+
+        .legal-content h3 {
+            font-size: 1rem;
+        }
+
+        .legal-content p {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuIcon = document.querySelector('.menu-icon');
+        const sidebar = document.querySelector('.sidebar');
+
+        menuIcon.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.sidebar') && !event.target.closest('.menu-icon')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+</script>
+</head> 

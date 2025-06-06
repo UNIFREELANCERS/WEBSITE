@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CONTACTS</title>
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--main-bg);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            color: var(--text-main);
+            perspective: 1000px;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            overflow: hidden;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            height: 72px;
+            position: absolute;
+            left: 16px;
+            transform: translateZ(20px);
+        }
+
+        .nav-links {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .navbar a {
+            color: var(--accent);
+            text-decoration: none;
+            padding: 14px 16px;
+            font-size: 17px;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: translateZ(10px);
+        }
+
+        .navbar a:hover {
+            background: var(--accent-bg);
+            color: var(--text-main);
+            transform: translateZ(20px) scale(1.1);
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 50px;
+            transform: translateZ(30px);
+        }
+
+        .contact-header h1 {
+            font-size: 3em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            transform-style: preserve-3d;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            border: 1px solid var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card:nth-child(1) { transform: translateZ(20px) rotateY(-5deg); }
+        .contact-card:nth-child(2) { transform: translateZ(30px); }
+        .contact-card:nth-child(3) { transform: translateZ(20px) rotateY(5deg); }
+
+        .contact-card:hover {
+            transform: translateY(-20px) translateZ(40px) rotateX(5deg);
+            background: var(--card-bg);
+            box-shadow: 0 20px 40px rgba(0, 188, 212, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+            transform: translateZ(20px);
+        }
+
+        .contact-title {
+            font-size: 1.8em;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 188, 212, 0.3);
+            transform: translateZ(15px);
+        }
+
+        .contact-info {
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            transform: translateZ(10px);
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--accent-bg);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent);
+            transform: translateZ(15px);
+        }
+
+        .contact-link:hover {
+            background: var(--accent);
+            color: var(--text-main);
+            transform: translateZ(25px) scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 60px;
+            transform-style: preserve-3d;
+        }
+
+        .social-link {
+            color: var(--accent);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            transform: translateZ(20px);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--accent);
+            border-radius: 15px;
+        }
+
+        .social-link:hover {
+            color: var(--text-main);
+            transform: translateZ(30px) scale(1.1);
+            background: var(--accent-bg);
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateZ(20px); }
+            50% { transform: translateY(-10px) translateZ(30px); }
+            100% { transform: translateY(0px) translateZ(20px); }
+        }
+
+        .contact-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .contact-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .contact-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+                height: 60px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo {
+                font-size: 1.2em;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 16px;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a:active {
+                transform: scale(0.98);
+                background: var(--accent-bg);
+            }
+
+            .menu-icon {
+                display: block;
+                font-size: 1.4rem;
+                cursor: pointer;
+                color: var(--accent);
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .menu-icon:active {
+                transform: scale(0.95);
+                background: var(--accent-bg);
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 16px;
+            }
+
+            .contacts-section {
+                padding: 16px;
+            }
+
+            .contact-card {
+                padding: 20px;
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+
+            .contact-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+
+            .contact-card p {
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+            }
+
+            .contact-info {
+                font-size: 0.95rem;
+                margin: 12px 0;
+            }
+
+            .contact-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .action-button {
+                width: 100%;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .action-button:active {
+                transform: scale(0.98);
+            }
+
+            .search-bar {
+                width: 100%;
+                margin-bottom: 16px;
+            }
+
+            .search-bar input {
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-group label {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+            }
+
+            .filter-group select {
+                padding: 12px;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 14px;
+                height: 56px;
+            }
+
+            .logo {
+                font-size: 1.1em;
+            }
+
+            .nav-links {
+                top: 56px;
+                padding: 12px;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+
+            .menu-icon {
+                font-size: 1.3rem;
+                padding: 6px;
+            }
+
+            .main-content {
+                margin-top: 66px;
+                padding: 12px;
+            }
+
+            .contact-card {
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+
+            .contact-card h3 {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+            .contact-card p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+
+            .contact-info {
+                font-size: 0.9rem;
+                margin: 10px 0;
+            }
+
+            .action-button {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .search-bar input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .filter-group label {
+                font-size: 0.9rem;
+            }
+
+            .filter-group select {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .nav-links {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <img src="1.svg" alt="Logo" class="logo">
+        <div class="nav-links">
+            <a href="file:///Volumes/NO%20NAME/Uni%20project/First.html">HOME</a>
+            <a href="file:///Volumes/NO%20NAME/Uni%20project/jobs.html">JOBS</a>
+            <a href="file:///Volumes/NO%20NAME/Uni%20project/dash.html">DASHBOARD</a>
+            <a href="file:///Volumes/NO%20NAME/Uni%20project/procontacts.html">HELP</a>
+        </div>
+    </div>
+
+    <div class="contact-container">
+        <div class="contact-header">
+            <h1>Contact Us</h1>
+            <p>Get in touch with us for any inquiries or support</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h2 class="contact-title">Email</h2>
+                <p class="contact-info">sunctionvpncompany@gmail.com<br>sanctionvpncompany@gmail.com</p>
+                <a href="mailto:support@sanctionvpn.com" class="contact-link">Send Email</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h2 class="contact-title">Phone</h2>
+                <p class="contact-info">+254 746917160<br>Available 24/7</p>
+                <a href="tel:+254746917160" class="contact-link">Call Now</a>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-icon">💬</div>
+                <h2 class="contact-title">Live Chat</h2>
+                <p class="contact-info">Chat with our support team<br>Quick Response Time</p>
+                <a href="https://wa.me/+254746917160" class="contact-link">Start Chat</a>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61572925467236" class="social-link">Facebook</a>
+            <a href="https://x.com/SancC34173" class="social-link">Twitter</a>
+            <a href="https://www.instagram.com/sanc.vpn.company?igsh=MWNhNXh3aDJ2Ynl1bg==" class="social-link">Instagram</a>
+            <a href="https://whatsapp.com/channel/0029Vb4U0zC2P59o9Y3MGt3x" class="social-link">WhatsApp</a>
+           
+            <a href="https://youtube.com/@sanctionvpncompany?si=aBgsghPuX7FnfiFD" class="social-link">Youtube</a>
+        </div>
+    </div>
+</body>
+</html>

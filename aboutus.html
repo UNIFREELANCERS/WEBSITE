@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        .team-member img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 1.1em;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .menu-icon {
+                display: block;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--accent);
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 15px;
+            }
+
+            .team-member {
+                padding: 20px;
+            }
+
+            .team-member h3 {
+                font-size: 1.2rem;
+            }
+
+            .team-member p {
+                font-size: 0.9rem;
+            }
+
+            .social-links a {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 8px 12px;
+            }
+
+            .logo {
+                font-size: 1em;
+            }
+
+            .nav-links {
+                top: 50px;
+                padding: 15px;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+
+            .menu-icon {
+                font-size: 1.3rem;
+            }
+
+            .main-content {
+                margin-top: 60px;
+                padding: 10px;
+            }
+
+            .team-member {
+                padding: 15px;
+            }
+
+            .team-member h3 {
+                font-size: 1.1rem;
+            }
+
+            .team-member p {
+                font-size: 0.85rem;
+            }
+
+            .social-links a {
+                font-size: 0.85rem;
+                padding: 6px;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers
+                    <span>Best Freelancing Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="aboutus.html" class="active"><i class="fas fa-user"></i> ABOUT US</a>
+                <a href="jobs.html"><i class="fas fa-hospital"></i> JOBS</a>
+                <a href="procontacts.html"><i class="fas fa-database"></i> CONTACTS</a>
+
+            </nav>
+            
+
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">   
+                <section class="hero-section">
+                    <h1 class="hero-title">Welcome to UNI Freelancers</h1>
+                    <p class="hero-subtitle">Connect with healthcare professionals, Academics and medical freelancers for your healthcare projects and other needs. Find the perfect match for your medical, legal, and educational needs.</p>
+                    <a href="register.html" class="cta-button">Get Started</a>
+                    </section>
+
+                    <p1>
+                        <h1>About Us</h1>
+                        <p>
+                            UNI Freelancers is a platform that connects organisational professionals, Academics and medical freelancers for your healthcare projects and other needs. Find the perfect match for your medical, legal, and educational needs.
+                            <br>
+                            <br>
+                            Our mission is to connect organisations with the right professionals for their projects and needs. We believe that everyone deserves access to the best talent, regardless of their location or background.
+                            <br>
+                            <br>
+                            We are a team of experienced professionals who are passionate about connecting people and helping them achieve their goals.
+                            
+                        </p>
+                    </p1>
+                
+
+
+
+    </div>
+
+    
+</body>
+</html>

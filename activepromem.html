@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Professional Member Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .card-title {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .task-item {
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            transform: translateX(5px);
+            background: var(--accent);
+        }
+
+        .task-item:hover .task-title,
+        .task-item:hover .task-description {
+            color: var(--text-main);
+        }
+
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .task-details {
+            flex: 1;
+        }
+
+        .task-title {
+            color: var(--accent);
+            margin: 0 0 4px 0;
+            font-weight: 500;
+        }
+
+        .task-description {
+            color: var(--text-main);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .package-info {
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .package-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin: 0 0 8px 0;
+        }
+
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .package-features li {
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .package-features li i {
+            color: var(--accent);
+        }
+
+        .pro-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .earnings-card {
+            background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%);
+            color: var(--text-main);
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .earnings-title {
+            font-size: 1.2rem;
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .earnings-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+        }
+
+        .earnings-period {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Audio Management Styles */
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .upload-section h2 {
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: var(--accent-bg);
+        }
+
+        .upload-area.dragover {
+            background: var(--accent);
+            border-color: var(--text-main);
+        }
+
+        .upload-button {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .upload-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .upload-hint {
+            color: var(--text-main);
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .upload-progress {
+            margin-top: 24px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--accent);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: var(--text-main);
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        .files-list-section {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .files-list-section h2 {
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .file-item {
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            transform: translateX(5px);
+            background: var(--accent);
+        }
+
+        .file-item i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .file-item:hover i {
+            color: var(--text-main);
+        }
+
+        .file-name {
+            flex: 1;
+            color: var(--text-main);
+        }
+
+        .transcribe-button {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transcribe-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #ff4444;
+            text-align: center;
+            padding: 16px;
+        }
+
+        .no-tasks {
+            color: var(--text-main);
+            text-align: center;
+            padding: 16px;
+            opacity: 0.7;
+        }
+
+        .accept-button {
+            background: #4CAF50;
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accept-button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .task-status {
+            background: var(--accent-bg);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        .task-status.in_progress {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .task-status.completed {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .task-status.pending {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+        }
+
+        /* Task Priority Styles */
+        .priority-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-badge.low {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+
+        .priority-badge.medium {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .priority-badge.high {
+            background: rgba(255, 87, 34, 0.1);
+            color: #ff5722;
+        }
+
+        .priority-badge.urgent {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+        }
+
+        /* Task Meta Information */
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .deadline {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Task Actions */
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .start-button {
+            background: #2196F3;
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .start-button:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .complete-button {
+            background: #4CAF50;
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .complete-button:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+        }
+
+        .view-button {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        /* Dialog Styles */
+        .completion-dialog,
+        .transcription-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .dialog-content {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            width: 90%;
+            max-width: 600px;
+            border: 2px solid var(--accent);
+        }
+
+        .dialog-content h3 {
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .dialog-content textarea {
+            width: 100%;
+            height: 200px;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            resize: vertical;
+        }
+
+        .dialog-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .dialog-actions button {
+            padding: 8px 24px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dialog-actions button:first-child {
+            background: var(--accent);
+            color: var(--text-main);
+        }
+
+        .dialog-actions button:last-child {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .dialog-actions button:hover {
+            transform: translateY(-2px);
+        }
+
+        .transcription-text {
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* File Details Layout */
+        .file-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers 
+                    <span>Medical Freelancing Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="jobs.html"><i class="fas fa-hospital"></i> JOBS</a>
+                <a href="procontacts.html"><i class="fas fa-database"></i> CONTACTS</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> EDUCATION</a>
+                <a href="profile.html"><i class="fas fa-user"></i> PROFILE</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h2 class="card-title">Professional Tasks</h2>
+                        </div>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-file-medical"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Advanced Medical Transcription</h3>
+                                    <p class="task-description">Complex medical reports and specialized documentation</p>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Specialized Medical Coding</h3>
+                                    <p class="task-description">Complex procedure coding and billing</p>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Medical Data Analysis</h3>
+                                    <p class="task-description">Analyze and interpret medical data sets</p>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-microscope"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Research Support</h3>
+                                    <p class="task-description">Support medical research projects</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h2 class="card-title">Your Progress</h2>
+                        </div>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Completed Tasks</h3>
+                                    <p class="task-description">0 tasks completed this month</p>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Average Rating</h3>
+                                    <p class="task-description">0/5.0 from clients</p>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="task-details">
+                                    <h3 class="task-title">Active Hours</h3>
+                                    <p class="task-description">0 hours this week</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="earnings-card">
+                            <h3 class="earnings-title">
+                                <i class="fas fa-dollar-sign"></i>
+                                Total Earnings
+                            </h3>
+                            <div class="earnings-amount">$0.00</div>
+                            <div class="earnings-period">This Month</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <h2 class="card-title">Professional Package</h2>
+                        </div>
+                        <div class="package-info">
+                            <h3 class="package-title">Your Current Package <span class="pro-badge">PRO</span></h3>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> Unlimited tasks per month</li>
+                                <li><i class="fas fa-check"></i> Advanced medical transcription</li>
+                                <li><i class="fas fa-check"></i> Priority support 24/7</li>
+                                <li><i class="fas fa-check"></i> Advanced analytics</li>
+                                <li><i class="fas fa-check"></i> Research project access</li>
+                                <li><i class="fas fa-check"></i> Higher earning potential</li>
+                                <li><i class="fas fa-check"></i> Exclusive client network</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user has professional package
+            const userData = JSON.parse(localStorage.getItem('userData')) || {};
+            if (!userData.hasProPackage) {
+                window.location.href = 'First.html';
+                return;
+            }
+
+            // Check if this is first time accessing professional package
+            if (!userData.isFirstTimePro) {
+                // Set initial values for first-time users
+                userData.completedTasks = 0;
+                userData.averageRating = 0;
+                userData.activeHours = 0;
+                userData.totalEarnings = 0;
+                userData.isFirstTimePro = true;
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                // Show welcome message
+                alert('Welcome to your Professional Package! Access all premium features and start earning more.');
+            }
+
+            // Update the progress card with user data
+            document.querySelector('.task-item:nth-child(1) .task-description').textContent = 
+                `${userData.completedTasks || 0} tasks completed this month`;
+            document.querySelector('.task-item:nth-child(2) .task-description').textContent = 
+                `${userData.averageRating || 0}/5.0 from clients`;
+            document.querySelector('.task-item:nth-child(3) .task-description').textContent = 
+                `${userData.activeHours || 0} hours this week`;
+            document.querySelector('.earnings-amount').textContent = 
+                `$${(userData.totalEarnings || 0).toFixed(2)}`;
+
+            // Handle task item clicks
+            const taskItems = document.querySelectorAll('.task-item');
+            taskItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const taskTitle = this.querySelector('.task-title').textContent;
+                    // In a real application, you would navigate to the task details page
+                    alert(`Starting task: ${taskTitle}`);
+                });
+            });
+        });
+    </script>
+    <script src="cms-integration.js"></script>
+</body>
+</html>
+
+
+
+

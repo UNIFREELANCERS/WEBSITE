@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Medical Records</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+        .sidebar .logo img {
+            width: 48px;
+            height: 48px;
+        }
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+        .sidebar nav a i {
+            font-size: 1.2rem;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+        .header .header-actions i {
+            font-size: 1.3rem;
+            color: var(--text-main);
+            cursor: pointer;
+            margin-right: 0;
+        }
+        .header .profile {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: var(--accent);
+        }
+        .content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            border: 2px solid var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+        h2 {
+            color: var(--accent-light);
+            font-size: 1.5rem;
+            margin: 24px 0 16px 0;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+        li:before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .top-nav {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .top-nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .top-nav a:hover, .top-nav a.active {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .top-nav a i {
+            font-size: 1.1rem;
+        }
+        .get-started-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 32px;
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+        .get-started-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+        }
+        .get-started-btn i {
+            margin-right: 8px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+                height: 60px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo {
+                font-size: 1.2em;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 16px;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a:active {
+                transform: scale(0.98);
+                background: var(--accent-bg);
+            }
+
+            .menu-icon {
+                display: block;
+                font-size: 1.4rem;
+                cursor: pointer;
+                color: var(--accent);
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .menu-icon:active {
+                transform: scale(0.95);
+                background: var(--accent-bg);
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 16px;
+            }
+
+            .top-nav {
+                padding: 12px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .top-nav a {
+                font-size: 0.95rem;
+                padding: 10px 14px;
+                border-radius: 8px;
+            }
+
+            .top-nav a:active {
+                transform: scale(0.98);
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                margin: 16px 0 12px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+            }
+
+            .action-button {
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .action-button:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 14px;
+                height: 56px;
+            }
+
+            .logo {
+                font-size: 1.1em;
+            }
+
+            .nav-links {
+                top: 56px;
+                padding: 12px;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+
+            .menu-icon {
+                font-size: 1.3rem;
+                padding: 6px;
+            }
+
+            .main-content {
+                margin-top: 66px;
+                padding: 12px;
+            }
+
+            .top-nav {
+                padding: 10px;
+                gap: 6px;
+            }
+
+            .top-nav a {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+                margin-bottom: 14px;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+                margin: 14px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+
+            .action-button {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .nav-links {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Medical
+                    <span>Freelancer Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="medicalrecord.html"><i class="fas fa-home"></i> Home</a>
+                <a href="usermedicalrecordtask.html"><i class="fas fa-hospital"></i> Medical</a>
+                <a href="data.html"><i class="fas fa-database"></i> Record Keeping</a>
+                <a href="legal.html"><i class="fas fa-gavel"></i> Legal</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> Education</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="top-nav">
+                <a href="#" class="active"><i class="fas fa-tasks"></i>Medical Tasks</a>
+                <a href="#"><i class="fas fa-trophy"></i>Awarded Medical Tasks</a>
+                <a href="#"><i class="fas fa-money-bill-wave"></i>My Payouts</a>
+                <a href="#"><i class="fas fa-question-circle"></i>Help</a>
+            </div>
+            <div class="content">
+                <a href="#" class="get-started-btn">
+                    <i class="fas fa-rocket"></i>Get Started
+                </a>
+
+                <div class="card">
+                    <h1>Medical Records</h1>
+                    <p>Medical records are an essential part of healthcare. They are used to store and track patient information. They are also used to track the progress of a patient's treatment.</p>
+                </div>
+
+                <div class="card">
+                    <h1>Digital Medical Record Keeping: Modern Systems and Compensation Insights</h1>
+                    <p>The healthcare industry has undergone a digital revolution, with computer-based medical record keeping becoming the standard. Electronic systems not only improve patient care but also streamline financial operations - including how healthcare professionals get paid. This article explores computerized medical record systems, their benefits, and how they impact compensation for medical professionals.</p>
+                </div>
+
+                <div class="card">
+                    <h2>The Shift to Digital Medical Records</h2>
+                    <p>Gone are the days of paper charts and handwritten notes. Today's healthcare facilities rely on sophisticated electronic systems that:</p>
+                    <ul>
+                        <li>Enhance patient safety through legible, complete records</li>
+                        <li>Improve care coordination across providers</li>
+                        <li>Streamline billing and coding for accurate reimbursements</li>
+                        <li>Support data-driven decisions with analytics capabilities</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Types of Computerized Medical Record Systems</h2>
+                    <h3>1. Electronic Health Records (EHRs)</h3>
+                    <p>Comprehensive digital versions of patient charts that include:</p>
+                    <ul>
+                        <li>Medical history</li>
+                        <li>Diagnoses</li>
+                        <li>Medications</li>
+                        <li>Treatment plans</li>
+                        <li>Immunization dates</li>
+                        <li>Allergies</li>
+                        <li>Radiology images</li>
+                        <li>Laboratory test results</li>
+                    </ul>
+
+                    <h3>2. Practice Management Software</h3>
+                    <p>Handles the business side of medicine:</p>
+                    <ul>
+                        <li>Appointment scheduling</li>
+                        <li>Patient registration</li>
+                        <li>Insurance verification</li>
+                        <li>Billing and claims processing</li>
+                    </ul>
+
+                    <h3>3. Revenue Cycle Management Systems</h3>
+                    <p>Tracks financial transactions from patient registration to final payment:</p>
+                    <ul>
+                        <li>Claims submission</li>
+                        <li>Payment posting</li>
+                        <li>Denial management</li>
+                        <li>Patient billing</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Compensation Benchmarks in the Digital Era</h2>
+                    <p>Recent surveys show how digitization affects earnings:</p>
+                    <table>
+                        <tr>
+                            <th>Position</th>
+                            <th>Avg. Salary (Traditional)</th>
+                            <th>Avg. Salary (EHR-Proficient)</th>
+                        </tr>
+                        <tr>
+                            <td>Physician</td>
+                            <td>$250,000</td>
+                            <td>$275,000+</td>
+                        </tr>
+                        <tr>
+                            <td>Nurse Practitioner</td>
+                            <td>$110,000</td>
+                            <td>$120,000+</td>
+                        </tr>
+                        <tr>
+                            <td>Medical Coder</td>
+                            <td>$45,000</td>
+                            <td>$60,000+</td>
+                        </tr>
+                        <tr>
+                            <td>HIM Specialist</td>
+                            <td>$50,000</td>
+                            <td>$65,000+</td>
+                        </tr>
+                    </table>
+                    <p><em>*Data from 2023 healthcare compensation surveys</em></p>
+                </div>
+
+                <div class="card">
+                    <h2>Maximizing Your Earnings with Digital Systems</h2>
+                    <p>Healthcare professionals can leverage technology to enhance their compensation:</p>
+                    <ul>
+                        <li>Master Your EHR System - Complete all training and certifications</li>
+                        <li>Document Efficiently - Use templates and voice recognition tools</li>
+                        <li>Understand Quality Metrics - Focus on measures that impact bonuses</li>
+                        <li>Stay Current on Coding - Regular training on ICD-10 and CPT updates</li>
+                        <li>Analyze Your Data - Review productivity reports regularly</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>The Future of Digital Medical Records and Compensation</h2>
+                    <p>Emerging trends that will further impact earnings:</p>
+                    <ul>
+                        <li>AI-assisted documentation reducing clerical burdens</li>
+                        <li>Blockchain-based records improving data security</li>
+                        <li>Telehealth integration expanding patient access</li>
+                        <li>Value-based care models tying more compensation to outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>     

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Package Upgrade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+        }
+
+        .main-content {
+            margin-top: 100px;
+            padding: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .upgrade-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 32px rgba(0, 188, 212, 0.3);
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        }
+
+        .package-title {
+            font-size: 2em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .package-price {
+            font-size: 3em;
+            color: var(--text-main);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .package-price span {
+            font-size: 0.5em;
+            color: var(--accent-light);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s forwards;
+        }
+
+        .feature-list li i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .upgrade-button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .upgrade-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+        }
+
+        .comparison-table {
+            margin-top: 60px;
+            width: 100%;
+            border-collapse: collapse;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--card-bg);
+            color: var(--accent);
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(10, 10, 42, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .upgrade-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+                height: 60px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo {
+                font-size: 1.2em;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 16px;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a:active {
+                transform: scale(0.98);
+                background: var(--accent-bg);
+            }
+
+            .menu-icon {
+                display: block;
+                font-size: 1.4rem;
+                cursor: pointer;
+                color: var(--accent);
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+
+            .menu-icon:active {
+                transform: scale(0.95);
+                background: var(--accent-bg);
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 16px;
+            }
+
+            .upgrade-container {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                margin-top: 24px;
+            }
+
+            .package-card {
+                padding: 24px;
+                border-radius: 12px;
+            }
+
+            .package-title {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+            }
+
+            .package-price {
+                font-size: 2.2rem;
+                margin: 16px 0;
+            }
+
+            .feature-list li {
+                font-size: 0.95rem;
+                padding: 10px 0;
+                margin: 4px 0;
+            }
+
+            .upgrade-button {
+                padding: 14px;
+                font-size: 1.1rem;
+                border-radius: 10px;
+                margin-top: 16px;
+            }
+
+            .upgrade-button:active {
+                transform: scale(0.98);
+            }
+
+            .comparison-table {
+                margin-top: 32px;
+                font-size: 0.95rem;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px;
+            }
+
+            /* Payment Modal Mobile Styles */
+            .payment-content {
+                padding: 24px;
+                width: 92%;
+                max-height: 90vh;
+                overflow-y: auto;
+                border-radius: 16px;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .payment-option {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .payment-option:active {
+                transform: scale(0.98);
+            }
+
+            .phone-input {
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 10px;
+                margin: 16px 0;
+            }
+
+            .confirm-payment {
+                padding: 14px;
+                font-size: 1.1rem;
+                border-radius: 10px;
+            }
+
+            .confirm-payment:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 14px;
+                height: 56px;
+            }
+
+            .logo {
+                font-size: 1.1em;
+            }
+
+            .nav-links {
+                top: 56px;
+                padding: 12px;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+
+            .menu-icon {
+                font-size: 1.3rem;
+                padding: 6px;
+            }
+
+            .main-content {
+                margin-top: 66px;
+                padding: 12px;
+            }
+
+            .package-card {
+                padding: 20px;
+            }
+
+            .package-title {
+                font-size: 1.3rem;
+                margin-bottom: 14px;
+            }
+
+            .package-price {
+                font-size: 2rem;
+                margin: 14px 0;
+            }
+
+            .feature-list li {
+                font-size: 0.9rem;
+                padding: 8px 0;
+                margin: 3px 0;
+            }
+
+            .upgrade-button {
+                padding: 12px;
+                font-size: 1rem;
+                margin-top: 14px;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px;
+            }
+
+            /* Payment Modal Small Screen Styles */
+            .payment-content {
+                padding: 20px;
+                width: 94%;
+            }
+
+            .payment-title {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+            }
+
+            .payment-option {
+                padding: 14px;
+            }
+
+            .payment-option h3 {
+                font-size: 1.1rem;
+            }
+
+            .payment-option p {
+                font-size: 0.9rem;
+            }
+
+            .phone-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .confirm-payment {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .nav-links {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            .payment-content {
+                max-height: 85vh;
+            }
+        }
+
+        .get-started-btn i {
+            margin-right: 8px;
+        }
+
+        /* Payment Modal Styles */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .payment-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-option {
+            background: var(--main-bg);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .payment-option.selected {
+            border-color: var(--accent);
+            background: var(--accent-bg);
+        }
+
+        .payment-option h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .payment-option p {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .payment-details {
+            background: var(--main-bg);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .payment-details h4 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .payment-info {
+            margin-bottom: 20px;
+        }
+
+        .payment-info p {
+            margin: 10px 0;
+            color: var(--text-main);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .phone-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .confirm-payment {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .confirm-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .confirm-payment:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .payment-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .payment-title {
+                font-size: 1.5rem;
+            }
+
+            .payment-option {
+                padding: 15px;
+            }
+
+            .payment-details {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-content {
+                padding: 15px;
+            }
+
+            .payment-title {
+                font-size: 1.3rem;
+            }
+
+            .payment-option h3 {
+                font-size: 1rem;
+            }
+
+            .payment-option p {
+                font-size: 0.8rem;
+            }
+
+            .phone-input {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .confirm-payment {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+            const depositButtons = document.querySelectorAll('.deposit-btn');
+            const paymentModal = document.querySelector('.payment-modal');
+            const closeModal = document.querySelector('.close-modal');
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const confirmPaymentBtn = document.querySelector('.confirm-payment');
+            const phoneInput = document.querySelector('.phone-input');
+            const amountDisplay = document.querySelector('.payment-amount');
+
+            // Store package prices
+            const packagePrices = {
+                'basic': 4000,
+                'professional': 6000
+            };
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Payment modal functionality
+            depositButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const packageType = this.closest('.package-card').querySelector('.package-title').textContent.toLowerCase();
+                    const amount = packagePrices[packageType.includes('basic') ? 'basic' : 'professional'];
+                    amountDisplay.textContent = `KES ${amount}`;
+                    paymentModal.classList.add('active');
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                paymentModal.classList.remove('active');
+            });
+
+            // Close modal when clicking outside
+            paymentModal.addEventListener('click', function(event) {
+                if (event.target === paymentModal) {
+                    paymentModal.classList.remove('active');
+                }
+            });
+
+            // Payment option selection
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Handle payment confirmation
+            confirmPaymentBtn.addEventListener('click', async function() {
+                const selectedOption = document.querySelector('.payment-option.selected');
+                const phoneNumber = phoneInput.value.trim();
+                const amount = parseInt(amountDisplay.textContent.replace('KES ', ''));
+
+                if (!selectedOption) {
+                    alert('Please select a payment method');
+                    return;
+                }
+
+                if (!phoneNumber || phoneNumber.length < 10) {
+                    alert('Please enter a valid phone number');
+                    return;
+                }
+
+                try {
+                    confirmPaymentBtn.disabled = true;
+                    confirmPaymentBtn.textContent = 'Processing...';
+
+                    if (selectedOption.querySelector('h3').textContent === 'STK Push') {
+                        // Initiate STK Push
+                        const response = await initiateSTKPush(phoneNumber, amount);
+                        if (response.success) {
+                            alert('Please check your phone for the M-Pesa prompt to complete the payment.');
+                            // Start polling for payment status
+                            pollPaymentStatus(response.transactionId);
+                        } else {
+                            throw new Error(response.message || 'Failed to initiate payment');
+                        }
+                    } else {
+                        // Show Paybill instructions
+                        alert(`Please use the following details to complete your payment:\n\nPaybill: 522522\nAccount: 1331994616\nAmount: KES ${amount}`);
+                    }
+                } catch (error) {
+                    alert('Payment initiation failed. Please try again.');
+                    console.error('Payment error:', error);
+                } finally {
+                    confirmPaymentBtn.disabled = false;
+                    confirmPaymentBtn.textContent = 'Confirm Payment';
+                }
+            });
+
+            // Function to initiate STK Push
+            async function initiateSTKPush(phoneNumber, amount) {
+                try {
+                    const response = await fetch('https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Replace with actual token
+                        },
+                        body: JSON.stringify({
+                            BusinessShortCode: '522522',
+                            Password: 'YOUR_PASSWORD', // Replace with actual password
+                            Timestamp: new Date().toISOString(),
+                            TransactionType: 'CustomerPayBillOnline',
+                            Amount: amount,
+                            PartyA: phoneNumber,
+                            PartyB: '522522',
+                            PhoneNumber: phoneNumber,
+                            CallBackURL: 'YOUR_CALLBACK_URL', // Replace with actual callback URL
+                            AccountReference: '1331994616',
+                            TransactionDesc: 'Package Upgrade Payment'
+                        })
+                    });
+
+                    const data = await response.json();
+                    return {
+                        success: data.ResponseCode === '0',
+                        transactionId: data.CheckoutRequestID,
+                        message: data.ResponseDescription
+                    };
+                } catch (error) {
+                    console.error('STK Push initiation failed:', error);
+                    throw error;
+                }
+            }
+
+            // Function to poll payment status
+            async function pollPaymentStatus(transactionId) {
+                const maxAttempts = 12; // 1 minute total (5 seconds * 12)
+                let attempts = 0;
+
+                const poll = async () => {
+                    try {
+                        const response = await fetch(`https://api.safaricom.co.ke/mpesa/stkpushquery/v1/query`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Replace with actual token
+                            },
+                            body: JSON.stringify({
+                                BusinessShortCode: '522522',
+                                Password: 'YOUR_PASSWORD', // Replace with actual password
+                                Timestamp: new Date().toISOString(),
+                                CheckoutRequestID: transactionId
+                            })
+                        });
+
+                        const data = await response.json();
+                        
+                        if (data.ResultCode === '0') {
+                            alert('Payment successful! Your package has been upgraded.');
+                            window.location.reload(); // Refresh to show updated package
+                            return;
+                        } else if (data.ResultCode === '1032') {
+                            // Payment cancelled
+                            alert('Payment was cancelled. Please try again.');
+                            return;
+                        }
+
+                        attempts++;
+                        if (attempts < maxAttempts) {
+                            setTimeout(poll, 5000); // Poll every 5 seconds
+                        } else {
+                            alert('Payment status check timed out. Please contact support.');
+                        }
+                    } catch (error) {
+                        console.error('Payment status check failed:', error);
+                        alert('Failed to check payment status. Please contact support.');
+                    }
+                };
+
+                poll();
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="First.html" class="logo">
+            <i class="fas fa-file-alt"></i> UNI Transcriptions
+        </a>
+        <div class="nav-links">
+            <a href="First.html">Home</a>
+            <a href="transcriptions.html">Transcriptions</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <h1 style="text-align: center; color: var(--accent); margin-bottom: 40px;">Upgrade Your Package</h1>
+        
+        <div class="upgrade-container">
+            <div class="package-card">
+                <h2 class="package-title">Current Basic Package</h2>
+                <div class="package-price">KES 4000<span>/lifetime access</span></div>
+                <ul class="feature-list">
+                    <li style="animation-delay: 0.1s"><i class="fas fa-check"></i> Basic Transcription Access</li>
+                    <li style="animation-delay: 0.2s"><i class="fas fa-check"></i> 100 Minutes Monthly</li>
+                    <li style="animation-delay: 0.3s"><i class="fas fa-check"></i> Standard Support</li>
+                    <li style="animation-delay: 0.4s"><i class="fas fa-check"></i> Basic File Management</li>
+                </ul>
+            </div>
+
+            <div class="package-card">
+                <h2 class="package-title">Professional Package</h2>
+                <div class="package-price">KES 6000<span>/lifetime access</span></div>
+                <ul class="feature-list">
+                    <li style="animation-delay: 0.1s"><i class="fas fa-check"></i> All Transcription Types Access</li>
+                    <li style="animation-delay: 0.2s"><i class="fas fa-check"></i> 300 Minutes Monthly</li>
+                    <li style="animation-delay: 0.3s"><i class="fas fa-check"></i> Priority Support 24/7</li>
+                    <li style="animation-delay: 0.4s"><i class="fas fa-check"></i> Advanced Record Keeping</li>
+                    <li style="animation-delay: 0.5s"><i class="fas fa-check"></i> Medical Transcription Access</li>
+                    <li style="animation-delay: 0.6s"><i class="fas fa-check"></i> Academic Transcription Access</li>
+                    <li style="animation-delay: 0.7s"><i class="fas fa-check"></i> Bulk Upload Features</li>
+                </ul>
+                <button class="upgrade-button" onclick="upgradePackage()">Upgrade Now</button>
+            </div>
+        </div>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Feature</th>
+                <th>Basic Package</th>
+                <th>Professional Package</th>
+            </tr>
+            <tr>
+                <td>Monthly Minutes</td>
+                <td>100</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>Academic Transcription</td>
+                <td><i class="fas fa-times" style="color: #ff4444;"></i></td>
+                <td><i class="fas fa-check" style="color: var(--accent);"></i></td>
+            </tr>
+            <tr>
+                <td>Medical Transcription</td>
+                <td><i class="fas fa-times" style="color: #ff4444;"></i></td>
+                <td><i class="fas fa-check" style="color: var(--accent);"></i></td>
+            </tr>
+            <tr>
+                <td>Support Level</td>
+                <td>Standard</td>
+                <td>Priority 24/7</td>
+            </tr>
+            <tr>
+                <td>Record Keeping</td>
+                <td>Basic</td>
+                <td>Advanced</td>
+            </tr>
+            <tr>
+                <td>Bulk Upload</td>
+                <td><i class="fas fa-times" style="color: #ff4444;"></i></td>
+                <td><i class="fas fa-check" style="color: var(--accent);"></i></td>
+            </tr>
+        </table>
+    </main>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal">
+        <div class="payment-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="payment-title">M-Pesa Payment</h2>
+            
+            <div class="payment-options">
+                <div class="payment-option">
+                    <h3>STK Push</h3>
+                    <p>Receive a prompt on your phone to complete the payment</p>
+                </div>
+                <div class="payment-option">
+                    <h3>Paybill</h3>
+                    <p>Pay using M-Pesa Paybill number</p>
+                </div>
+            </div>
+
+            <div class="payment-details">
+                <h4>Payment Details</h4>
+                <div class="payment-info">
+                    <p>Amount: <span class="highlight payment-amount">KES 0</span></p>
+                    <p>Paybill Number: <span class="highlight">522522</span></p>
+                    <p>Account Number: <span class="highlight">1331994616</span></p>
+                </div>
+                <input type="tel" class="phone-input" placeholder="Enter your M-Pesa phone number" maxlength="10">
+                <button class="confirm-payment">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

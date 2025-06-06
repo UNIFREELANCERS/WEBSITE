@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UNI Freelancers - Transcriptions</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+                --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+                --text-main: #ffffff;
+                --accent: #00bcd4;
+                --accent-light: #4dd0e1;
+                --accent-bg: rgba(0, 188, 212, 0.1);
+                --border: #1a1a4a;
+                --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+            }
+            body {
+                margin: 0;
+                font-family: 'Montserrat', sans-serif;
+                background: var(--main-bg);
+                color: var(--text-main);
+                line-height: 1.6;
+                min-height: 100vh;
+                perspective: 1000px;
+                overflow-x: hidden;
+            }
+            .navbar {
+                background: var(--card-bg);
+                padding: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                z-index: 1000;
+                box-shadow: var(--shadow);
+                transform-style: preserve-3d;
+            }
+            .logo {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: var(--accent);
+                font-weight: bold;
+                font-size: 1.5em;
+                text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+                transform: translateZ(20px);
+            }
+            .nav-links {
+                display: flex;
+                gap: 20px;
+                transform: translateZ(15px);
+            }
+            .nav-links a {
+                color: var(--text-main);
+                text-decoration: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+                font-size: 1.1em;
+            }
+            .nav-links a:hover {
+                background: var(--accent-bg);
+                color: var(--accent);
+                transform: translateY(-2px) translateZ(10px);
+            }
+            .main-content {
+                margin-top: 80px;
+                padding: 40px;
+                transform-style: preserve-3d;
+            }
+            .hero-section {
+                text-align: center;
+                margin-bottom: 50px;
+                transform: translateZ(30px);
+            }
+            .hero-section h1 {
+                font-size: 3.5em;
+                color: var(--accent);
+                margin-bottom: 20px;
+                text-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+            }
+            .hero-section p {
+                font-size: 1.2em;
+                max-width: 800px;
+                margin: 0 auto;
+                color: var(--text-main);
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            }
+            .package-info {
+                background: var(--card-bg);
+                padding: 30px;
+                border-radius: 15px;
+                margin: 20px auto;
+                max-width: 800px;
+                box-shadow: var(--shadow);
+            }
+            .services-grid {
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                gap: 30px;
+                margin-top: 40px;
+            }
+            .service-card {
+                background: var(--card-bg);
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+                transition: all 0.5s ease;
+                transform-style: preserve-3d;
+                position: relative;
+            }
+            .service-card:nth-child(1) { 
+                grid-column: span 5;
+                transform: translateZ(20px) rotateY(-5deg);
+            }
+            .service-card:nth-child(2) { 
+                grid-column: span 7;
+                transform: translateZ(30px);
+            }
+            .service-card:nth-child(3) { 
+                grid-column: span 4;
+                transform: translateZ(25px) rotateY(5deg);
+            }
+            .service-card:nth-child(4) { 
+                grid-column: span 8;
+                transform: translateZ(20px) rotateY(-3deg);
+            }
+            .service-card:hover {
+                transform: translateY(-20px) translateZ(40px) rotateX(5deg);
+                box-shadow: 0 20px 40px rgba(0, 188, 212, 0.3);
+            }
+            .service-icon {
+                font-size: 2.5em;
+                color: var(--accent);
+                margin-bottom: 20px;
+                text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+                transform: translateZ(15px);
+            }
+            .service-title {
+                font-size: 1.8em;
+                color: var(--accent);
+                margin-bottom: 15px;
+                text-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+                transform: translateZ(10px);
+            }
+            .service-description {
+                color: var(--text-main);
+                margin-bottom: 20px;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+                transform: translateZ(5px);
+            }
+            .cta-section {
+                grid-column: span 12;
+                text-align: center;
+                margin-top: 50px;
+                transform: translateZ(25px);
+            }
+            .cta-button {
+                background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1.2em;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+                transform: translateZ(20px);
+            }
+            .cta-button:hover {
+                transform: translateY(-5px) translateZ(30px);
+                box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+            }
+            @keyframes float {
+                0% { transform: translateY(0px) translateZ(20px); }
+                50% { transform: translateY(-10px) translateZ(30px); }
+                100% { transform: translateY(0px) translateZ(20px); }
+            }
+            .service-card {
+                animation: float 6s ease-in-out infinite;
+            }
+            .service-card:nth-child(2) { animation-delay: 0.2s; }
+            .service-card:nth-child(3) { animation-delay: 0.4s; }
+            .service-card:nth-child(4) { animation-delay: 0.6s; }
+            @media (max-width: 1200px) {
+                .services-grid {
+                    grid-template-columns: 1fr;
+                }
+                .service-card {
+                    grid-column: span 12 !important;
+                    transform: none !important;
+                }
+                .service-card:hover {
+                    transform: translateY(-10px) !important;
+                }
+            }
+            .menu-icon {
+                display: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: var(--accent);
+            }
+            .transcription-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 24px;
+                margin-top: 32px;
+            }
+            .transcription-card {
+                background: var(--card-bg);
+                border-radius: 12px;
+                padding: 24px;
+                border: 1px solid var(--border);
+                transition: all 0.3s ease;
+            }
+            /* Mobile Responsive Styles */
+            @media (max-width: 768px) {
+                .navbar {
+                    padding: 10px 15px;
+                }
+
+                .logo {
+                    font-size: 1.1em;
+                }
+
+                .nav-links {
+                    display: none;
+                    position: fixed;
+                    top: 60px;
+                    left: 0;
+                    width: 100%;
+                    background: var(--card-bg);
+                    padding: 20px;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+                    box-shadow: var(--shadow);
+                    z-index: 1000;
+                }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links a {
+                    width: 100%;
+                    text-align: center;
+                    padding: 12px;
+                    font-size: 0.9rem;
+                }
+
+                .menu-icon {
+                    display: block;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: var(--accent);
+                }
+
+                .main-content {
+                    margin-top: 70px;
+                    padding: 15px;
+                }
+
+                .hero-section {
+                    text-align: center;
+                    padding: 20px;
+                }
+
+                .hero-section h1 {
+                    font-size: 1.8rem;
+                }
+
+                .hero-section p {
+                    font-size: 1rem;
+                }
+
+                .transcription-grid {
+                    grid-template-columns: 1fr;
+                    gap: 16px;
+                }
+
+                .transcription-card {
+                    padding: 20px;
+                }
+
+                .transcription-card h3 {
+                    font-size: 1.2rem;
+                }
+
+                .transcription-card p {
+                    font-size: 0.9rem;
+                }
+
+                .transcription-status {
+                    font-size: 0.9rem;
+                }
+
+                .action-button {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 1rem;
+                }
+            }
+            /* Small Mobile Devices */
+            @media (max-width: 480px) {
+                .navbar {
+                    padding: 8px 12px;
+                }
+
+                .logo {
+                    font-size: 1em;
+                }
+
+                .nav-links {
+                    top: 50px;
+                    padding: 15px;
+                }
+
+                .nav-links a {
+                    font-size: 0.85rem;
+                    padding: 10px;
+                }
+
+                .menu-icon {
+                    font-size: 1.3rem;
+                }
+
+                .main-content {
+                    margin-top: 60px;
+                    padding: 10px;
+                }
+
+                .hero-section h1 {
+                    font-size: 1.5rem;
+                }
+
+                .hero-section p {
+                    font-size: 0.9rem;
+                }
+
+                .transcription-card {
+                    padding: 15px;
+                }
+
+                .transcription-card h3 {
+                    font-size: 1.1rem;
+                }
+
+                .transcription-card p {
+                    font-size: 0.85rem;
+                }
+
+                .transcription-status {
+                    font-size: 0.85rem;
+                }
+
+                .action-button {
+                    padding: 10px;
+                    font-size: 0.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar">
+            <a href="First.html" class="logo">
+                <i class="fas fa-file-alt"></i> UNI Transcriptions
+            </a>
+            <div class="nav-links">
+                <a href="First.html">Home</a>
+                <a href="academicdash.html">Academic Transcription</a>
+                <a href="medical.html">Medical Transcription</a>
+                <a href="music.html">Music Transcription</a>
+                <a href="video.html">Video Transcription</a>
+                <a href="#" id="recordKeepingLink">Record Keeping</a>
+            </div>
+            <div class="menu-icon">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <h1>Professional Transcription Services</h1>
+                <p>Expert transcription services for various industries, ensuring accuracy, confidentiality, and compliance with industry standards.</p>
+            </section>
+
+            <div class="package-info" style="background: var(--card-bg); padding: 30px; border-radius: 15px; margin: 20px auto; max-width: 800px; box-shadow: var(--shadow);">
+                <h2 style="color: var(--accent); text-align: center; margin-bottom: 20px;">Your Package Details</h2>
+                <div id="packageDetails" style="text-align: center;">
+                    <p style="font-size: 1.2em; margin-bottom: 15px;">Loading your package information...</p>
+                </div>
+                <div id="upgradeSection" style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); display: none;">
+                    <button id="upgradeButton" class="cta-button" style="margin-top: 15px; background: var(--accent);">
+                        Upgrade to Professional
+                    </button>
+                </div>
+                <div id="minutesInfo" style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <h3 style="color: var(--accent); margin-bottom: 15px;">Available Transcription Minutes</h3>
+                    <div id="minutesDisplay" style="font-size: 1.2em;">
+                        <span id="availableMinutes">0</span> minutes available
+                    </div>
+                    <button id="purchaseMinutes" class="cta-button" style="margin-top: 15px; background: var(--accent);">
+                        Purchase More Minutes
+                    </button>
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h2 class="service-title">General Transcription</h2>
+                    <p class="service-description">Accurate transcription of general audio and video content, including interviews, meetings, and presentations.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h2 class="service-title">Audio Transcription</h2>
+                    <p class="service-description">High-quality transcription of audio recordings, including podcasts, lectures, and voice memos.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h2 class="service-title">Video Transcription</h2>
+                    <p class="service-description">Precise transcription of video content, including webinars, training videos, and promotional materials.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h2 class="service-title">Multilingual Transcription</h2>
+                    <p class="service-description">Specialized transcription services in multiple languages, ensuring global accessibility and understanding.</p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <button class="cta-button" onclick="window.location.href='transcriptiontask.html'">
+                    Get Started with Transcription
+                </button>
+            </div>
+        </main>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check if user is logged in and has a package
+                function checkUserPackage() {
+                    // Get user package info from localStorage or session
+                    const userPackage = localStorage.getItem('userPackage');
+                    const packageDetails = document.getElementById('packageDetails');
+                    const recordKeepingLink = document.getElementById('recordKeepingLink');
+                    const upgradeSection = document.getElementById('upgradeSection');
+                    
+                    if (!userPackage) {
+                        // Redirect to login or package selection if no package found
+                        window.location.href = 'First.html';
+                        return;
+                    }
+
+                    const packageInfo = JSON.parse(userPackage);
+                    let packageHTML = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--accent); font-size: 1.5em;">${packageInfo.type} Package</h3>
+                            <p style="margin: 10px 0;">Status: <span style="color: var(--accent-light);">Active</span></p>
+                            <p style="margin: 10px 0;">Features:</p>
+                            <ul style="list-style: none; padding: 0;">
+                                ${packageInfo.features.map(feature => `
+                                    <li style="margin: 5px 0;">
+                                        <i class="fas fa-check" style="color: var(--accent); margin-right: 10px;"></i>
+                                        ${feature}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                    
+                    packageDetails.innerHTML = packageHTML;
+
+                    // Show upgrade button for Basic package users
+                    if (packageInfo.type === 'Basic') {
+                        upgradeSection.style.display = 'block';
+                        document.getElementById('upgradeButton').addEventListener('click', function() {
+                            window.location.href = 'package-upgrade.html';
+                        });
+                    }
+
+                    // Handle record keeping access based on package type
+                    if (packageInfo.type === 'Professional') {
+                        recordKeepingLink.href = 'data.html';
+                        recordKeepingLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            window.location.href = 'data.html';
+                        });
+                    } else {
+                        recordKeepingLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            alert('Record Keeping is only available for Professional package users. Please upgrade your package to access this feature.');
+                        });
+                    }
+
+                    return packageInfo;
+                }
+
+                // Function to check and update available minutes
+                function updateAvailableMinutes() {
+                    const availableMinutes = parseInt(localStorage.getItem('transcriptionMinutes') || '0');
+                    document.getElementById('availableMinutes').textContent = availableMinutes;
+                }
+
+                // Function to check if user has enough minutes for a task
+                function checkMinutesForTask(taskDuration) {
+                    const availableMinutes = parseInt(localStorage.getItem('transcriptionMinutes') || '0');
+                    if (availableMinutes < taskDuration) {
+                        const neededMinutes = taskDuration - availableMinutes;
+                        if (confirm(`You need ${neededMinutes} more minutes to complete this task. Would you like to purchase more minutes?`)) {
+                            window.location.href = 'academicmin.html';
+                        }
+                        return false;
+                    }
+                    return true;
+                }
+
+                // Function to verify package for academic transcription
+                function verifyAcademicAccess() {
+                    const packageInfo = checkUserPackage();
+                    if (!packageInfo) return false;
+
+                    // Check if package includes academic transcription access
+                    const hasAcademicAccess = packageInfo.features.some(feature => 
+                        feature.toLowerCase().includes('academic') || 
+                        feature.toLowerCase().includes('all transcription types')
+                    );
+
+                    if (!hasAcademicAccess) {
+                        alert('Your current package does not include access to Academic Transcription services. Please upgrade your package to access this feature.');
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                // Add click handler for academic transcription link
+                const academicLink = document.querySelector('a[href="academicdash.html"]');
+                if (academicLink) {
+                    academicLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (verifyAcademicAccess()) {
+                            // Check minutes before proceeding
+                            const taskDuration = 30; // Example duration in minutes
+                            if (checkMinutesForTask(taskDuration)) {
+                                window.location.href = 'academicdash.html';
+                            }
+                        }
+                    });
+                }
+
+                // Add click handlers to service cards
+                document.querySelectorAll('.service-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const serviceType = this.querySelector('.service-title').textContent;
+                        if (serviceType === 'Medical Transcription') {
+                            // Check minutes before proceeding to medical transcription
+                            const taskDuration = 30; // Example duration in minutes
+                            if (checkMinutesForTask(taskDuration)) {
+                                window.location.href = 'medical.html';
+                            }
+                        } else if (serviceType === 'Academic Transcription') {
+                            // Verify package and check minutes before proceeding
+                            if (verifyAcademicAccess()) {
+                                const taskDuration = 30; // Example duration in minutes
+                                if (checkMinutesForTask(taskDuration)) {
+                                    window.location.href = 'academicdash.html';
+                                }
+                            }
+                        } else {
+                            // For other services, proceed normally
+                            window.location.href = `${serviceType.toLowerCase().replace(' ', '')}.html`;
+                        }
+                    });
+                });
+
+                // Purchase minutes button handler
+                document.getElementById('purchaseMinutes').addEventListener('click', function() {
+                    window.location.href = 'academicmin.html';
+                });
+
+                // Call the functions when page loads
+                checkUserPackage();
+                updateAvailableMinutes();
+
+                // Add scroll-based 3D effects
+                window.addEventListener('scroll', function() {
+                    const cards = document.querySelectorAll('.service-card');
+                    cards.forEach((card, index) => {
+                        const rect = card.getBoundingClientRect();
+                        const scrollPosition = window.scrollY;
+                        const cardPosition = rect.top + scrollPosition;
+                        const scrollPercent = (scrollPosition - cardPosition) / window.innerHeight;
+                        
+                        if (scrollPercent > -0.5 && scrollPercent < 0.5) {
+                            card.style.transform = `translateY(${scrollPercent * 50}px) translateZ(${30 + scrollPercent * 20}px)`;
+                        }
+                    });
+                });
+
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.querySelector('.nav-links');
+
+                menuIcon.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.navbar')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

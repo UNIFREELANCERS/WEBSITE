@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: var(--card-bg);
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 48px 0;
+            margin-bottom: 48px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--accent);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 32px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+        }
+
+        .cta-button:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            text-align: center;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .feature-description {
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            text-align: center;
+            border: 2px solid var(--accent);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .testimonials-section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .testimonial-text {
+            color: var(--text-main);
+            font-style: italic;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .author-title {
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 1.1em;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .menu-icon {
+                display: block;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--accent);
+            }
+
+            .main-content {
+                margin-top: 70px;
+                padding: 15px;
+            }
+
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .menu-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .menu-card {
+                padding: 20px;
+            }
+
+            .menu-card h2 {
+                font-size: 1.2rem;
+            }
+
+            .menu-card li {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .cta-button {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 8px 12px;
+            }
+
+            .logo {
+                font-size: 1em;
+            }
+
+            .nav-links {
+                top: 50px;
+                padding: 15px;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+
+            .menu-icon {
+                font-size: 1.3rem;
+            }
+
+            .main-content {
+                margin-top: 60px;
+                padding: 10px;
+            }
+
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-section p {
+                font-size: 0.9rem;
+            }
+
+            .menu-card {
+                padding: 15px;
+            }
+
+            .menu-card h2 {
+                font-size: 1.1rem;
+            }
+
+            .menu-card li {
+                font-size: 0.85rem;
+                padding: 6px;
+            }
+
+            .cta-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers 
+                    <span>Best Freelancing Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="aboutus.html" class="active"><i class="fas fa-user"></i> ABOUT US</a>
+                <a href="jobs.html"><i class="fas fa-hospital"></i> JOBS</a>
+                <a href="procontacts.html"><i class="fas fa-database"></i> CONTACTS</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> testimonial-author</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <section class="hero-section">
+                    <h1 class="hero-title">Welcome to UNI Freelancers</h1>
+                    <p class="hero-subtitle">Connect with healthcare professionals, Academics and medical freelancers for your healthcare projects and other needs. Find the perfect match for your medical, legal, and educational needs.</p>
+                    <a href="register.html" class="cta-button">Get Started</a>
+                </section>
+
+                <section class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h3 class="feature-title">Medical & Academic Services</h3>
+                        <p class="feature-description">Access qualified medical professionals for various healthcare projects and consultations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <h3 class="feature-title">Medical & Academic Services</h3>
+                        <p class="feature-description">Access qualified medical professionals for various healthcare projects and consultations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h3 class="feature-title">Legal & Academic Services</h3>
+                        <p class="feature-description">Access qualified legal professionals for various legal projects and consultations.</p>
+                    </div>
+                </section>
+
+                <section class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Active Freelancers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">Completed Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Client Satisfaction</div>
+                    </div>
+                </section>
+
+                <section class="testimonials-section">
+                    <h2 class="section-title">What Our Clients Say</h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The platform made it easy to find qualified Freelance professionals for our research project. Highly recommended!"</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">FO</div>
+                                <div class="author-info">
+                                    <div class="author-name">Francis Odhiambo</div>
+                                    <div class="author-title">Founder ChezaCheza Dance Foundation</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Excellent service for Academic, organisational and medical record management. The freelancers are professional and efficient."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">CO</div>
+                                <div class="author-info">
+                                    <div class="author-name">Collins Oluoch</div>
+                                    <div class="author-title">CEO ChezaCheza Dance Foundation</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Academic Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            perspective: 1000px;
+            overflow-x: hidden;
+        }
+        .navbar {
+            background: var(--card-bg);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transform-style: preserve-3d;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+            transform: translateZ(20px);
+        }
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--accent);
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            transform: translateZ(15px);
+        }
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            font-size: 1.1em;
+        }
+        .nav-links a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            transform: translateY(-2px) translateZ(10px);
+        }
+        .main-content {
+            margin-top: 80px;
+            padding: 40px;
+            transform-style: preserve-3d;
+        }
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            transform: translateZ(30px);
+        }
+        .hero-section h1 {
+            font-size: 3.5em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        .hero-section p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-main);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .service-card:nth-child(1) { 
+            grid-column: span 5;
+            transform: translateZ(20px) rotateY(-5deg);
+        }
+        .service-card:nth-child(2) { 
+            grid-column: span 7;
+            transform: translateZ(30px);
+        }
+        .service-card:nth-child(3) { 
+            grid-column: span 4;
+            transform: translateZ(25px) rotateY(5deg);
+        }
+        .service-card:nth-child(4) { 
+            grid-column: span 8;
+            transform: translateZ(20px) rotateY(-3deg);
+        }
+        .service-card:hover {
+            transform: translateY(-20px) translateZ(40px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 188, 212, 0.3);
+        }
+        .service-icon {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+            transform: translateZ(15px);
+        }
+        .service-title {
+            font-size: 1.8em;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+            transform: translateZ(10px);
+        }
+        .service-description {
+            color: var(--text-main);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            transform: translateZ(5px);
+        }
+        .cta-section {
+            grid-column: span 12;
+            text-align: center;
+            margin-top: 50px;
+            transform: translateZ(25px);
+        }
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+            transform: translateZ(20px);
+        }
+        .cta-button:hover {
+            transform: translateY(-5px) translateZ(30px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) translateZ(20px); }
+            50% { transform: translateY(-10px) translateZ(30px); }
+            100% { transform: translateY(0px) translateZ(20px); }
+        }
+        .service-card {
+            animation: float 6s ease-in-out infinite;
+        }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.4s; }
+        .service-card:nth-child(4) { animation-delay: 0.6s; }
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+                height: 60px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .logo {
+                font-size: 1.2em;
+            }
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                padding: 16px;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+            .nav-links a:active {
+                transform: scale(0.98);
+                background: var(--accent-bg);
+            }
+            .menu-icon {
+                display: block;
+                font-size: 1.4rem;
+                cursor: pointer;
+                color: var(--accent);
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+            }
+            .menu-icon:active {
+                transform: scale(0.95);
+                background: var(--accent-bg);
+            }
+            .main-content {
+                margin-top: 70px;
+                padding: 16px;
+            }
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            .hero-section p {
+                font-size: 1rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .service-card {
+                padding: 20px;
+            }
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+            .service-card p {
+                font-size: 0.95rem;
+            }
+            .service-icon {
+                font-size: 1.5rem;
+            }
+            .cta-button {
+                width: 100%;
+                padding: 14px;
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 14px;
+                height: 56px;
+            }
+            .logo {
+                font-size: 1.1em;
+            }
+            .nav-links {
+                top: 56px;
+                padding: 12px;
+            }
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 12px;
+            }
+            .menu-icon {
+                font-size: 1.3rem;
+                padding: 6px;
+            }
+            .main-content {
+                margin-top: 66px;
+                padding: 12px;
+            }
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+            .hero-section p {
+                font-size: 0.9rem;
+            }
+            .service-card {
+                padding: 16px;
+            }
+            .service-card h3 {
+                font-size: 1.1rem;
+            }
+            .service-icon {
+                font-size: 1.3rem;
+            }
+            .cta-button {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+        }
+        @media (max-height: 500px) and (orientation: landscape) {
+            .nav-links {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="First.html" class="logo">
+            <i class="fas fa-graduation-cap"></i> UNI Academic
+        </a>
+        <div class="nav-links">
+            <a href="First.html">Home</a>
+            <a href="academic.html">Academic Services</a>
+            <a href="dash.html">Dashboard</a>
+            <a href="profile.html">Profile</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <h1>Professional Academic Transcription Services</h1>
+            <p>Expert academic transcription services for students and educators, ensuring accuracy, confidentiality, and compliance with academic standards.</p>
+        </section>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="service-title">Lecture Transcription</h2>
+                <p class="service-description">Accurate transcription of academic lectures, seminars, and presentations with strict adherence to academic terminology.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+                <h2 class="service-title">Research Documentation</h2>
+                <p class="service-description">Detailed transcription of research interviews, focus groups, and academic discussions for comprehensive documentation.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h2 class="service-title">Educational Content</h2>
+                <p class="service-description">Precise transcription of educational videos, tutorials, and online courses for enhanced learning experiences.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2 class="service-title">Group Discussions</h2>
+                <p class="service-description">Specialized transcription services for group discussions, workshops, and collaborative academic sessions.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <button class="cta-button" onclick="window.location.href='academicdash.html'">
+                Get Started with Academic Transcription
+            </button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll-based 3D effects
+            window.addEventListener('scroll', function() {
+                const cards = document.querySelectorAll('.service-card');
+                cards.forEach((card, index) => {
+                    const rect = card.getBoundingClientRect();
+                    const scrollPosition = window.scrollY;
+                    const cardPosition = rect.top + scrollPosition;
+                    const scrollPercent = (scrollPosition - cardPosition) / window.innerHeight;
+                    
+                    if (scrollPercent > -0.5 && scrollPercent < 0.5) {
+                        card.style.transform = `translateY(${scrollPercent * 50}px) translateZ(${30 + scrollPercent * 20}px)`;
+                    }
+                });
+            });
+
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.navbar')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

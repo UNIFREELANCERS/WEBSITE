@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Medical Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: var(--card-bg);
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+            align-items: center;
+        }
+
+        .hero-content {
+            padding-right: 32px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .hero-image {
+            background: var(--accent-bg);
+            border-radius: 24px;
+            padding: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--accent);
+            height: 100%;
+        }
+
+        .hero-image i {
+            font-size: 8rem;
+            color: var(--accent);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-card.large {
+            grid-column: span 8;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .service-card.medium {
+            grid-column: span 6;
+        }
+
+        .service-card.small {
+            grid-column: span 4;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .service-description {
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            background: var(--accent-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--accent);
+        }
+
+        .service-image i {
+            font-size: 4rem;
+            color: var(--accent);
+        }
+
+        .cta-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            border: 2px solid var(--accent);
+            margin-bottom: 48px;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--accent);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 32px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+        }
+
+        .cta-button:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .specialists-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .specialist-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            text-align: center;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .specialist-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .specialist-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--text-main);
+        }
+
+        .specialist-name {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .specialist-title {
+            color: var(--text-main);
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .specialist-expertise {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 0;
+                bottom: 0;
+                width: 280px;
+                transform: translateX(0);
+            }
+
+            .sidebar.active {
+                transform: translateX(300px);
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .main {
+                padding: 10px;
+                margin-top: 60px;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 16px;
+            }
+
+            .service-card {
+                padding: 20px;
+            }
+
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .service-card p {
+                font-size: 0.9rem;
+            }
+
+            .service-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .main {
+                padding: 5px;
+            }
+
+            .service-card {
+                padding: 15px;
+            }
+
+            .service-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .service-icon {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Medical
+                    <span>Freelancer Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="medical.html" class="active"><i class="fas fa-hospital"></i> Medical</a>
+                <a href="data.html"><i class="fas fa-database"></i> Record Keeping</a>
+                <a href="legal.html"><i class="fas fa-gavel"></i> Legal</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> Education</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <section class="hero-section">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Expert Medical Services at Your Fingertips</h1>
+                        <p class="hero-subtitle">Connect with qualified healthcare professionals for specialized medical services, consultations, and expert advice. Our platform brings together top medical talent with healthcare organizations.</p>
+                    </div>
+                    <div class="hero-image">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                </section>
+
+                <section class="services-grid">
+                    <div class="service-card large">
+                        <div class="service-content">
+                            <div class="service-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h3 class="service-title">Medical Consultations</h3>
+                            <p class="service-description">Access expert medical consultations from qualified healthcare professionals. Get specialized advice and second opinions from experienced doctors and specialists.</p>
+                        </div>
+                        <div class="service-image">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                    </div>
+                    <div class="service-card medium">
+                        <div class="service-icon">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                        <h3 class="service-title">Clinical Services</h3>
+                        <p class="service-description">Professional clinical services including patient care, medical procedures, and healthcare management solutions.</p>
+                    </div>
+                    <div class="service-card small">
+                        <div class="service-icon">
+                            <i class="fas fa-notes-medical"></i>
+                        </div>
+                        <h3 class="service-title">Medical Writing</h3>
+                        <p class="service-description">Expert medical content writing, research papers, and documentation services.</p>
+                    </div>
+                </section>
+
+                <section class="cta-section">
+                    <h2 class="cta-title">Ready to Find Your Medical Expert?</h2>
+                    <p class="cta-description">Join our platform today and connect with qualified healthcare professionals for your medical needs. Whether you're a healthcare organization or an individual seeking expert medical services, we've got you covered.</p>
+                    <a href="#" class="cta-button">Get Started Now</a>
+                </section>
+
+                <section class="specialists-grid">
+                    <div class="specialist-card">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3 class="specialist-name">Dr. Sarah Johnson</h3>
+                        <div class="specialist-title">Cardiologist</div>
+                        <p class="specialist-expertise">Specializing in cardiovascular health, preventive care, and heart disease management.</p>
+                    </div>
+                    <div class="specialist-card">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3 class="specialist-name">Dr. Michael Chen</h3>
+                        <div class="specialist-title">Neurologist</div>
+                        <p class="specialist-expertise">Expert in neurological disorders, brain health, and cognitive function assessment.</p>
+                    </div>
+                    <div class="specialist-card">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3 class="specialist-name">Dr. Emily Rodriguez</h3>
+                        <div class="specialist-title">Pediatrician</div>
+                        <p class="specialist-expertise">Specializing in child healthcare, development, and pediatric medicine.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const sidebar = document.querySelector('.sidebar');
+            const main = document.querySelector('.main');
+
+            menuIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside
+            main.addEventListener('click', function() {
+                if (sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+

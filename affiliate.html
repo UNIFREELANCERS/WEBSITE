@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Affiliate Program</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .split-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-section {
+            flex: 1;
+            background: var(--card-bg);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            z-index: 1;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .right-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .affiliate-title {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .affiliate-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            opacity: 0.8;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .benefit-card {
+            background: var(--accent-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .benefit-title {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .benefit-description {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .affiliate-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 24px;
+            background: var(--accent-bg);
+            border-radius: 16px;
+            border: 1px solid var(--accent);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .split-container {
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                padding: 20px;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .affiliate-info {
+            padding: 20px;
+        }
+
+        .affiliate-link-container {
+            margin-bottom: 30px;
+        }
+
+        .link-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .link-box input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .copy-button {
+            padding: 12px 20px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: var(--accent-light);
+        }
+
+        .levels-container {
+            margin-bottom: 30px;
+        }
+
+        .level-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .level-card {
+            background: var(--accent-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--accent);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-number {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .level-commission {
+            background: var(--accent);
+            color: var(--text-main);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .level-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+
+        .referral-tree {
+            margin-top: 30px;
+        }
+
+        .tree-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--accent-bg);
+            border-radius: 12px;
+            border: 1px solid var(--accent);
+            min-height: 200px;
+        }
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .tree-node i {
+            color: var(--accent);
+        }
+
+        .tree-node .user-info {
+            flex: 1;
+        }
+
+        .tree-node .user-name {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .tree-node .user-level {
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .balance-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .balance-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 12px 0;
+        }
+
+        .balance-label {
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+
+        .referral-details {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 32px;
+        }
+
+        .referral-levels {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .level-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .level-section h3 {
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .referral-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .referral-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 6px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+        }
+
+        .referral-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .referral-name {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .referral-detail {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+
+        .referral-commission {
+            text-align: right;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: normal;
+            display: block;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                padding: 20px;
+            }
+
+            .left-content {
+                max-width: 100%;
+            }
+
+            .affiliate-title {
+                font-size: 2rem;
+                margin-bottom: 16px;
+            }
+
+            .affiliate-subtitle {
+                font-size: 1rem;
+                margin-bottom: 24px;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+
+            .benefit-card {
+                padding: 16px;
+            }
+
+            .benefit-icon {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+
+            .benefit-title {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+
+            .benefit-description {
+                font-size: 0.85rem;
+            }
+
+            .affiliate-form {
+                padding: 20px;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .submit-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 16px;
+                margin-top: 24px;
+            }
+
+            .stat-item {
+                padding: 10px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+                margin-bottom: 4px;
+            }
+
+            .stat-label {
+                font-size: 0.85rem;
+            }
+
+            .affiliate-info {
+                padding: 15px;
+            }
+
+            .affiliate-link-container {
+                margin-bottom: 20px;
+            }
+
+            .link-box {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .link-box input {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .left-section,
+            .right-section {
+                padding: 15px;
+            }
+
+            .affiliate-title {
+                font-size: 1.8rem;
+            }
+
+            .affiliate-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .benefit-card {
+                padding: 12px;
+            }
+
+            .benefit-icon {
+                font-size: 1.3rem;
+            }
+
+            .benefit-title {
+                font-size: 1rem;
+            }
+
+            .benefit-description {
+                font-size: 0.8rem;
+            }
+
+            .affiliate-form {
+                padding: 15px;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .submit-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .stats-container {
+                padding: 12px;
+                gap: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.3rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .affiliate-info {
+                padding: 12px;
+            }
+
+            .link-box input {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="logo.png" alt="UNI PROJECT Logo">
+        <div class="logo-text">
+            UNI PROJECT
+            <span>Medical Freelancing Platform</span>
+        </div>
+    </div>
+    <div class="split-container">
+        <div class="left-section">
+            <div class="left-content">
+                <h1 class="affiliate-title">Join Our Affiliate Program</h1>
+                <p class="affiliate-subtitle">Earn rewards by promoting our platform and helping others discover opportunities in medical freelancing.</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3 class="benefit-title">Competitive Commission</h3>
+                        <p class="benefit-description">Earn up to 20% commission on every successful referral's membership purchase.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="benefit-title">Performance Bonuses</h3>
+                        <p class="benefit-description">Get additional bonuses for reaching monthly referral targets.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="benefit-title">Marketing Tools</h3>
+                        <p class="benefit-description">Access our suite of marketing materials and tracking tools.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="benefit-title">Community Support</h3>
+                        <p class="benefit-description">Join our affiliate community for tips and best practices.</p>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-value">20%</div>
+                        <div class="stat-label">Commission Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">1000+</div>
+                        <div class="stat-label">Active Affiliates</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$50K+</div>
+                        <div class="stat-label">Paid Out</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+            <div class="affiliate-form">
+                <h2 class="form-title">Your Affiliate Dashboard</h2>
+                
+                <div class="affiliate-info">
+                    <div class="affiliate-link-container">
+                        <h3>Your Affiliate Link</h3>
+                        <div class="link-box">
+                            <input type="text" id="affiliateLink" readonly>
+                            <button onclick="copyAffiliateLink()" class="copy-button">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="levels-container">
+                        <h3>Affiliate Levels</h3>
+                        <div class="level-cards">
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 1</span>
+                                    <span class="level-commission">20%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level1Count">0</span>
+                                        <span class="stat-label">Direct Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level1Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 2</span>
+                                    <span class="level-commission">10%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level2Count">0</span>
+                                        <span class="stat-label">Indirect Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level2Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 3</span>
+                                    <span class="level-commission">5%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level3Count">0</span>
+                                        <span class="stat-label">Indirect Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level3Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 4</span>
+                                    <span class="level-commission">3%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level4Count">0</span>
+                                        <span class="stat-label">Indirect Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level4Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 5</span>
+                                    <span class="level-commission">2%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level5Count">0</span>
+                                        <span class="stat-label">Indirect Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level5Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-card">
+                                <div class="level-header">
+                                    <span class="level-number">Level 6</span>
+                                    <span class="level-commission">1%</span>
+                                </div>
+                                <div class="level-stats">
+                                    <div class="stat">
+                                        <span class="stat-value" id="level6Count">0</span>
+                                        <span class="stat-label">Indirect Referrals</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value" id="level6Earnings">$0</span>
+                                        <span class="stat-label">Earnings</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="referral-tree">
+                        <h3>Your Referral Network</h3>
+                        <div id="referralTree" class="tree-container">
+                            <!-- Tree will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="balance-section">
+            <div class="balance-card">
+                <h3>Current Balance</h3>
+                <div class="balance-amount" id="currentBalance">$0.00</div>
+                <div class="balance-label">Available for Withdrawal</div>
+            </div>
+            <div class="balance-card">
+                <h3>Pending Balance</h3>
+                <div class="balance-amount" id="pendingBalance">$0.00</div>
+                <div class="balance-label">Awaiting Confirmation</div>
+            </div>
+            <div class="balance-card">
+                <h3>Total Earnings</h3>
+                <div class="balance-amount" id="totalEarnings">$0.00</div>
+                <div class="balance-label">All Time Earnings</div>
+            </div>
+        </div>
+
+        <div class="referral-details">
+            <h2>Your Referral Network</h2>
+            <div class="referral-levels">
+                <div class="level-section">
+                    <h3>Level 1 Referrals</h3>
+                    <div class="referral-list" id="level1Referrals"></div>
+                </div>
+                <div class="level-section">
+                    <h3>Level 2 Referrals</h3>
+                    <div class="referral-list" id="level2Referrals"></div>
+                </div>
+                <div class="level-section">
+                    <h3>Level 3 Referrals</h3>
+                    <div class="referral-list" id="level3Referrals"></div>
+                </div>
+                <div class="level-section">
+                    <h3>Level 4 Referrals</h3>
+                    <div class="referral-list" id="level4Referrals"></div>
+                </div>
+                <div class="level-section">
+                    <h3>Level 5 Referrals</h3>
+                    <div class="referral-list" id="level5Referrals"></div>
+                </div>
+                <div class="level-section">
+                    <h3>Level 6 Referrals</h3>
+                    <div class="referral-list" id="level6Referrals"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize affiliate data
+        function initializeAffiliateData() {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Generate affiliate link
+            const affiliateLink = `${window.location.origin}/register.html?ref=${currentUser.id}`;
+            document.getElementById('affiliateLink').value = affiliateLink;
+
+            // Load affiliate data from localStorage
+            const affiliateData = JSON.parse(localStorage.getItem(`affiliate_${currentUser.id}`)) || {
+                referrals: [],
+                earnings: {
+                    level1: 0,
+                    level2: 0,
+                    level3: 0,
+                    level4: 0,
+                    level5: 0,
+                    level6: 0
+                }
+            };
+
+            // Update level statistics
+            updateLevelStats(affiliateData);
+            updateReferralTree(affiliateData.referrals);
+        }
+
+        function updateLevelStats(data) {
+            // Count referrals by level
+            const levelCounts = {
+                level1: 0,
+                level2: 0,
+                level3: 0,
+                level4: 0,
+                level5: 0,
+                level6: 0
+            };
+
+            data.referrals.forEach(referral => {
+                levelCounts[`level${referral.level}`]++;
+            });
+
+            // Update UI
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`level${i}Count`).textContent = levelCounts[`level${i}`];
+                document.getElementById(`level${i}Earnings`).textContent = `$${data.earnings[`level${i}`]}`;
+            }
+        }
+
+        function updateReferralTree(referrals) {
+            const treeContainer = document.getElementById('referralTree');
+            treeContainer.innerHTML = '';
+
+            if (referrals.length === 0) {
+                treeContainer.innerHTML = '<p>No referrals yet. Share your affiliate link to start earning!</p>';
+                return;
+            }
+
+            referrals.forEach(referral => {
+                const node = document.createElement('div');
+                node.className = 'tree-node';
+                node.innerHTML = `
+                    <i class="fas fa-user"></i>
+                    <div class="user-info">
+                        <div class="user-name">${referral.name}</div>
+                        <div class="user-level">Level ${referral.level} Referral</div>
+                    </div>
+                `;
+                treeContainer.appendChild(node);
+            });
+        }
+
+        function copyAffiliateLink() {
+            const linkInput = document.getElementById('affiliateLink');
+            linkInput.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const button = document.querySelector('.copy-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+
+        function updateReferralDetails() {
+            const userId = localStorage.getItem('currentUserId');
+            if (!userId) return;
+
+            const referralDetails = userDB.getReferralDetails(userId);
+            if (!referralDetails) return;
+
+            // Update balance information
+            document.getElementById('currentBalance').textContent = `$${referralDetails.currentBalance.toFixed(2)}`;
+            document.getElementById('pendingBalance').textContent = `$${referralDetails.pendingBalance.toFixed(2)}`;
+            document.getElementById('totalEarnings').textContent = `$${referralDetails.totalEarnings.toFixed(2)}`;
+
+            // Update referral lists for each level
+            for (let level = 1; level <= 6; level++) {
+                const levelReferrals = referralDetails.referralsByLevel[`level${level}`];
+                const container = document.getElementById(`level${level}Referrals`);
+                container.innerHTML = '';
+
+                if (levelReferrals.length === 0) {
+                    container.innerHTML = '<div class="referral-item">No referrals at this level</div>';
+                    continue;
+                }
+
+                levelReferrals.forEach(referral => {
+                    const referralElement = document.createElement('div');
+                    referralElement.className = 'referral-item';
+                    referralElement.innerHTML = `
+                        <div class="referral-info">
+                            <div class="referral-name">${referral.fullName}</div>
+                            <div class="referral-detail">${referral.email}</div>
+                            <div class="referral-detail">${referral.phone}</div>
+                            <div class="referral-detail">Joined: ${new Date(referral.registrationDate).toLocaleDateString()}</div>
+                        </div>
+                        <div class="referral-commission">
+                            $${referral.commission.toFixed(2)}
+                        </div>
+                    `;
+                    container.appendChild(referralElement);
+                });
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeAffiliateData();
+            updateReferralDetails();
+        });
+
+        // Function to send affiliate commission email
+        function sendAffiliateCommissionEmail(level, bonus, userEmail) {
+            const emailSubject = "Congratulations! You've Earned a Commission at UNI Freelancers";
+            const emailBody = `
+                Dear ${level} Level Affiliate,
+
+                We are thrilled to inform you that you have earned a commission bonus of $${bonus}!
+
+                Thank you for believing in the dream of UNI Freelancers and for being an integral part of our community. Your dedication and trust in our platform have made this possible.
+
+                Keep up the great work in helping others discover the opportunities at UNI Freelancers!
+
+                Best regards,
+                The UNI Freelancers Team
+            `;
+
+            // This would be replaced with actual email sending API call
+            fetch('your-email-api-endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    to: userEmail,
+                    subject: emailSubject,
+                    body: emailBody
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Commission email sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending commission email:', error);
+            });
+        }
+
+        // Function to handle new commission
+        function handleNewCommission(level, bonus, userEmail) {
+            // Update UI
+            document.getElementById('affiliateLevel').textContent = `${level} Level`;
+            document.getElementById('latestCommission').textContent = `$${bonus}`;
+            
+            // Update total earnings (this would come from your database)
+            const currentEarnings = parseFloat(document.getElementById('totalEarnings').textContent.replace('$', ''));
+            document.getElementById('totalEarnings').textContent = `$${(currentEarnings + bonus).toFixed(2)}`;
+
+            // Send email notification
+            sendAffiliateCommissionEmail(level, bonus, userEmail);
+        }
+
+        // Example of how to trigger commission notification
+        // This would be called when a commission is earned
+        function onCommissionEarned(level, bonus, userEmail) {
+            handleNewCommission(level, bonus, userEmail);
+        }
+    </script>
+</body>
+</html>

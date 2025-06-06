@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .register-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+            align-items: center;
+        }
+
+        .register-section:nth-child(even) {
+            direction: rtl;
+        }
+
+        .register-section:nth-child(even) .register-content {
+            direction: ltr;
+        }
+
+        .register-content {
+            padding: 32px;
+        }
+
+        .register-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+
+        .register-description {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .register-image {
+            background: var(--accent-bg);
+            border-radius: 24px;
+            padding: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--accent);
+            height: 100%;
+        }
+
+        .register-image i {
+            font-size: 8rem;
+            color: var(--accent);
+        }
+
+        .form-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 48px;
+            border: 2px solid var(--accent);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .submit-button {
+            grid-column: span 2;
+            padding: 16px;
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .benefits-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            text-align: center;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .benefit-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .benefit-description {
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .form-hint {
+            color: var(--accent-light);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .login-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--accent-light);
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .success-message {
+            color: #4caf50;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: normal;
+            display: block;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-row .form-group {
+                width: 100%;
+            }
+
+            .submit-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .login-link {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 5px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 8px;
+            }
+
+            .submit-button {
+                padding: 10px;
+            }
+
+            .form-group textarea {
+                min-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="logo.png" alt="UNI PROJECT Logo">
+        <div class="logo-text">
+            UNI Freelancers
+            <span>Best Freelancing Platform</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="medical.html"><i class="fas fa-hospital"></i> Medical</a>
+                <a href="data.html"><i class="fas fa-database"></i> Record Keeping</a>
+                <a href="legal.html"><i class="fas fa-gavel"></i> Legal</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> Education</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <section class="register-section">
+                    <div class="register-content">
+                        <h1 class="register-title">Join Our Freelancer Community</h1>
+                        <p class="register-description">Connect with healthcare, Dance, Academic organizations and access exciting projects,. Whether you're a healthcare professional, medical writer, or data analyst, we have opportunities for you.</p>
+                    </div>
+                    <div class="register-image">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </section>
+
+                <section class="benefits-section">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-briefcase-medical"></i>
+                        </div>
+                        <h3 class="benefit-title">Flexible Work</h3>
+                        <p class="benefit-description">Choose projects that match your expertise and schedule. Work remotely or on-site based on your preferences.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3 class="benefit-title">Competitive Pay</h3>
+                        <p class="benefit-description">Earn competitive rates for your medical expertise. Set your own rates and get paid securely through our platform.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="benefit-title">Professional Network</h3>
+                        <p class="benefit-description">Connect with healthcare organizations and build your professional network in the medical industry.</p>
+                    </div>
+                </section>
+
+                <section class="register-section">
+                    <div class="register-image">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="register-content">
+                        <h2 class="register-title">Why Choose UNI Freelancers?</h2>
+                        <p class="register-description">Our platform is designed specifically for Students, Jobless, Youths and healthcare professionals. We provide the tools, support, and opportunities you need to succeed in your Professional freelancing career.</p>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <h2 class="form-title">Create Your Account</h2>
+                    <form class="form-grid" id="registerForm">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" required minlength="8">
+                            <small class="form-hint">Password must be at least 8 characters long</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirmPassword" required minlength="8">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Professional Title</label>
+                            <input type="text" name="professionalTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Specialization</label>
+                            <select name="specialization" required>
+                                <option value="">Select your specialization</option>
+                                <option value="physician">Physician</option>
+                                <option value="nurse">Nurse</option>
+                                <option value="therapist">Therapist</option>
+                                <option value="researcher">Medical Researcher</option>
+                                <option value="writer">Medical Writer</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Years of Experience</label>
+                            <input type="number" name="yearsOfExperience" min="0" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Professional Bio</label>
+                            <textarea name="bio" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <div class="checkbox-group">
+                                <input type="checkbox" required>
+                                <label>I agree to the terms and conditions</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-button">Create Account</button>
+                    </form>
+                    <div class="login-link">
+                        <p>Already have an account? <a href="login.html">Login here</a></p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import userDatabase from './database.js';
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                // Get form data
+                const formData = new FormData(this);
+                const userData = {
+                    firstName: formData.get('firstName'),
+                    lastName: formData.get('lastName'),
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    phone: formData.get('phone'),
+                    professionalTitle: formData.get('professionalTitle'),
+                    specialization: formData.get('specialization'),
+                    yearsOfExperience: formData.get('yearsOfExperience'),
+                    bio: formData.get('bio')
+                };
+
+                // Check for referral code in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const referrerId = urlParams.get('ref');
+
+                // Register user with referral if present
+                const newUser = userDatabase.registerUser(userData, referrerId);
+
+                // Store user session
+                sessionStorage.setItem('currentUser', JSON.stringify({
+                    id: newUser.id,
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    email: newUser.email,
+                    professionalTitle: newUser.professionalTitle,
+                    specialization: newUser.specialization
+                }));
+
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'success-message';
+                successMessage.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    Registration successful! Redirecting to dashboard...
+                `;
+                document.querySelector('.form-section').appendChild(successMessage);
+
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'dash.html';
+                }, 2000);
+
+            } catch (error) {
+                // Show error message
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i>
+                    ${error.message}
+                `;
+                document.querySelector('.form-section').appendChild(errorMessage);
+
+                // Remove error message after 3 seconds
+                setTimeout(() => {
+                    errorMessage.remove();
+                }, 3000);
+            }
+        });
+
+        // Add styles for messages
+        const style = document.createElement('style');
+        style.textContent = `
+            .success-message,
+            .error-message {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                animation: slideIn 0.3s ease-out;
+                z-index: 1000;
+            }
+
+            .success-message {
+                background: #4caf50;
+                color: white;
+            }
+
+            .error-message {
+                background: #f44336;
+                color: white;
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

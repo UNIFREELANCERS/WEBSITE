@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Tasks Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --sidebar-bg: #10102a;
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+            --danger: #ff5252;
+            --success: #4caf50;
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0 0 30px 0;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent);
+            padding: 30px 30px 20px 30px;
+            text-shadow: 0 0 10px var(--accent-bg);
+        }
+        .sidebar .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .sidebar .nav a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 30px 0 0 30px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        .sidebar .nav a.active, .sidebar .nav a:hover {
+            background: var(--accent);
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 2px 0 10px var(--accent-bg);
+        }
+        .sidebar .nav a i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: transparent;
+        }
+        .header {
+            background: var(--card-bg);
+            padding: 24px 40px 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        .header .title {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+        .header .user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .header .user i {
+            font-size: 1.5em;
+            color: var(--accent);
+        }
+        .dashboard-content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            transform-style: preserve-3d;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(.25,.8,.25,1);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        .stat-card:nth-child(1) {
+            grid-column: span 4;
+            transform: translateZ(20px) rotateY(-4deg);
+        }
+        .stat-card:nth-child(2) {
+            grid-column: span 4;
+            transform: translateZ(30px);
+        }
+        .stat-card:nth-child(3) {
+            grid-column: span 4;
+            transform: translateZ(15px) rotateY(4deg);
+        }
+        .stat-card:hover {
+            transform: translateY(-15px) translateZ(40px) scale(1.04);
+            box-shadow: 0 20px 40px var(--accent-bg);
+        }
+        .stat-title {
+            font-size: 1.1em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+        .stat-icon {
+            font-size: 2em;
+            margin-top: 10px;
+        }
+        .stat-icon.success { color: var(--success); }
+        .stat-icon.danger { color: var(--danger); }
+        .stat-icon.info { color: var(--accent); }
+        .tasks-section {
+            grid-column: span 8;
+            margin-top: 40px;
+        }
+        .tasks-title {
+            font-size: 1.3em;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+        .tasks-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .task-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 24px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .task-card:nth-child(odd) {
+            transform: translateZ(10px) rotateY(-2deg);
+        }
+        .task-card:nth-child(even) {
+            transform: translateZ(20px) rotateY(2deg);
+        }
+        .task-card:hover {
+            transform: translateY(-10px) translateZ(30px) scale(1.03);
+            box-shadow: 0 10px 30px var(--accent-bg);
+        }
+        .task-title {
+            font-size: 1.1em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .task-desc {
+            color: var(--text-main);
+            font-size: 1em;
+        }
+        .task-meta {
+            font-size: 0.95em;
+            color: var(--accent-light);
+            margin-top: 8px;
+        }
+        @media (max-width: 1200px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            .stat-card, .tasks-section {
+                grid-column: span 12 !important;
+            }
+            .tasks-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo"><i class="fas fa-hospital"></i> UNI Medical</div>
+        <nav class="nav">
+            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> My dashboard</a>
+            <a href="getmin.html"><i class="fas fa-clock"></i> Get Minutes</a>
+            <a href="availamedicaltrascritask.html"><i class="fas fa-tasks"></i> All Available Tasks</a>
+            <a href="awardedmedictrascritask.html"><i class="fas fa-award"></i> Awarded Tasks</a>
+            <a href="#"><i class="fas fa-wallet"></i> My Payouts</a>
+            <a href="#"><i class="fas fa-user-cog"></i> My Profile Settings</a>
+            <a href="#"><i class="fas fa-headset"></i> Support Request</a>
+            <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+        </nav>
+    </aside>
+    <div class="main">
+        <div class="header">
+            <div class="title">My Dashboard</div>
+            <div class="user">
+                <i class="fas fa-user-circle"></i> <span>User</span>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="stat-card">
+                <div class="stat-title">Available Balance</div>
+                <div class="stat-value">$0</div>
+                <button style="margin-top:10px;padding:6px 18px;border-radius:6px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-weight:bold;cursor:pointer;">Withdraw</button>
+                <div class="stat-icon info"><i class="fas fa-wallet"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Available Minutes</div>
+                <div class="stat-value">0</div>
+                <div class="stat-icon info"><i class="fas fa-language"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Total Minutes Used</div>
+                <div class="stat-value" style="color:var(--danger);">0.00</div>
+                <div class="stat-icon danger"><i class="fas fa-battery-empty"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Total Minutes Awarded</div>
+                <div class="stat-value" style="color:var(--success);">0</div>
+                <div class="stat-icon success"><i class="fas fa-battery-full"></i></div>
+            </div>
+            <div class="tasks-section">
+                <div class="tasks-title">All Medical Tasks</div>
+                <div class="tasks-list">
+                    <div class="task-card">
+                        <div class="task-title">Transcribe Patient Notes</div>
+                        <div class="task-desc">Transcribe and format handwritten patient notes into digital records.</div>
+                        <div class="task-meta">Due: 2024-06-30</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-title">Surgical Report Entry</div>
+                        <div class="task-desc">Enter and verify surgical procedure details for hospital records.</div>
+                        <div class="task-meta">Due: 2024-07-02</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-title">Lab Results Transcription</div>
+                        <div class="task-desc">Transcribe lab results and ensure accuracy for patient files.</div>
+                        <div class="task-meta">Due: 2024-07-05</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-title">Cardiology Report Formatting</div>
+                        <div class="task-desc">Format and review cardiology reports for compliance and clarity.</div>
+                        <div class="task-meta">Due: 2024-07-08</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

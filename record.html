@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - Record Keeping</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .featured-article {
+            grid-column: span 8;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            border: 2px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-article::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--accent-bg), transparent);
+            opacity: 0.5;
+        }
+
+        .featured-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .featured-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .sidebar-articles {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .article-title {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .article-description {
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .task-section {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px;
+            margin-top: 48px;
+            border: 2px solid var(--accent);
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .task-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .view-tasks-button {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-tasks-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .task-card {
+            background: var(--accent-bg);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .task-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .task-button {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .accept-button {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .view-button {
+            background: var(--accent);
+            color: white;
+        }
+
+        .task-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .task-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .image-preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-description {
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .task-card-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .task-card-description {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .task-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            opacity: 0.7;
+        }
+
+        .deadline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .deadline-badge.urgent {
+            background: #ff4444;
+            color: white;
+        }
+
+        .deadline-badge.warning {
+            background: #ffbb33;
+            color: black;
+        }
+
+        .deadline-badge.normal {
+            background: #00C851;
+            color: white;
+        }
+
+        .submit-task-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .submit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            background: var(--accent-bg);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .file-upload-text {
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .submit-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-button:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .submit-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--accent-bg);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Freelancers 
+                    <span>Medical Freelancing Platform</span>
+                </div>
+            </div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="jobs.html"><i class="fas fa-hospital"></i> JOBS</a>
+                <a href="contacts.html"><i class="fas fa-database"></i> CONTACTS</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> EDUCATION</a>
+                <a href="profile.html"><i class="fas fa-user"></i> PROFILE</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="magazine-grid">
+                    <div class="featured-article">
+                        <h1 class="featured-title">Professional Record Keeping</h1>
+                        <p class="featured-description">
+                            Access our comprehensive record keeping system designed specifically for medical professionals. 
+                            Manage your tasks, track progress, and maintain detailed records of all your medical transcriptions.
+                        </p>
+                    </div>
+                    <div class="sidebar-articles">
+                        <div class="article-card">
+                            <h3 class="article-title">Task Management</h3>
+                            <p class="article-description">
+                                Efficiently manage your transcription tasks with our intuitive interface.
+                            </p>
+                        </div>
+                        <div class="article-card">
+                            <h3 class="article-title">Progress Tracking</h3>
+                            <p class="article-description">
+                                Monitor your work progress and maintain detailed records of completed tasks.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-section">
+                    <div class="task-header">
+                        <h2 class="task-title">Your Tasks</h2>
+                        <button class="view-tasks-button" onclick="window.location.href='activepromem.html'">
+                            <i class="fas fa-tasks"></i> View All Tasks
+                        </button>
+                    </div>
+                    <div class="task-grid" id="taskGrid">
+                        <!-- Tasks will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TaskManager {
+            constructor() {
+                this.apiUrl = 'http://localhost:1337';
+                this.token = localStorage.getItem('strapiToken');
+            }
+
+            getHeaders() {
+                return {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`,
+                };
+            }
+
+            async getRecentTasks() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/tasks?filters[status][$eq]=available&populate=*`, {
+                        headers: this.getHeaders()
+                    });
+                    if (!response.ok) throw new Error('Failed to fetch tasks');
+                    const data = await response.json();
+                    return data.data.map(task => ({
+                        id: task.id,
+                        ...task.attributes,
+                        image: task.attributes.image?.data?.attributes?.url,
+                        deadline: task.attributes.deadline
+                    }));
+                } catch (error) {
+                    console.error('Error fetching tasks:', error);
+                    return [];
+                }
+            }
+
+            async acceptTask(taskId) {
+                try {
+                    const response = await fetch(`${this.apiUrl}/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: this.getHeaders(),
+                        body: JSON.stringify({
+                            data: {
+                                status: 'assigned',
+                                assignedTo: JSON.parse(localStorage.getItem('userData')).id,
+                                assignedAt: new Date().toISOString()
+                            }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to accept task');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error accepting task:', error);
+                    throw error;
+                }
+            }
+
+            async submitTask(taskId, file) {
+                try {
+                    // First upload the file
+                    const formData = new FormData();
+                    formData.append('files', file);
+
+                    const uploadResponse = await fetch(`${this.apiUrl}/api/upload`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        },
+                        body: formData
+                    });
+
+                    if (!uploadResponse.ok) throw new Error('Failed to upload file');
+                    const uploadData = await uploadResponse.json();
+
+                    // Then update the task with the submission
+                    const response = await fetch(`${this.apiUrl}/api/tasks/${taskId}`, {
+                        method: 'PUT',
+                        headers: this.getHeaders(),
+                        body: JSON.stringify({
+                            data: {
+                                status: 'completed',
+                                submission: uploadData[0].id,
+                                completedAt: new Date().toISOString()
+                            }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to submit task');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error submitting task:', error);
+                    throw error;
+                }
+            }
+        }
+
+        class TaskUI {
+            constructor() {
+                this.taskManager = new TaskManager();
+                this.initializeUI();
+                this.setupImagePreviewModal();
+                this.setupSubmitModal();
+            }
+
+            setupImagePreviewModal() {
+                const modal = document.createElement('div');
+                modal.className = 'image-preview-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="modal-close">&times;</span>
+                        <img class="modal-image" src="" alt="Task Document">
+                        <h2 class="modal-title"></h2>
+                        <p class="modal-description"></p>
+                        <div class="modal-actions">
+                            <button class="task-button accept-button" onclick="taskUI.acceptTaskFromModal()">
+                                <i class="fas fa-check"></i> Accept Task
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                modal.querySelector('.modal-close').addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+
+                window.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+
+            showImagePreview(task) {
+                const modal = document.querySelector('.image-preview-modal');
+                const modalImage = modal.querySelector('.modal-image');
+                const modalTitle = modal.querySelector('.modal-title');
+                const modalDescription = modal.querySelector('.modal-description');
+                const acceptButton = modal.querySelector('.accept-button');
+
+                modalImage.src = `${this.taskManager.apiUrl}${task.image}`;
+                modalTitle.textContent = task.title;
+                modalDescription.textContent = task.description;
+                acceptButton.onclick = () => this.acceptTask(task.id);
+
+                modal.style.display = 'block';
+            }
+
+            async acceptTask(taskId) {
+                try {
+                    await this.taskManager.acceptTask(taskId);
+                    await this.loadRecentTasks();
+                    document.querySelector('.image-preview-modal').style.display = 'none';
+                } catch (error) {
+                    alert('Error accepting task. Please try again.');
+                }
+            }
+
+            setupSubmitModal() {
+                const modal = document.createElement('div');
+                modal.className = 'submit-task-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="modal-close">&times;</span>
+                        <h2 class="modal-title">Submit Task</h2>
+                        <form class="submit-form">
+                            <div class="file-upload">
+                                <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                                <div class="file-upload-text">
+                                    <p>Drag and drop your document here</p>
+                                    <p>or click to browse files</p>
+                                </div>
+                                <input type="file" accept=".pdf,.doc,.docx" required>
+                            </div>
+                            <div class="progress-bar" style="display: none;">
+                                <div class="progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                            <button type="submit" class="submit-button">
+                                <i class="fas fa-paper-plane"></i> Submit Task
+                            </button>
+                        </form>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                const closeBtn = modal.querySelector('.modal-close');
+                closeBtn.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+
+                window.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+
+                const form = modal.querySelector('form');
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const fileInput = form.querySelector('input[type="file"]');
+                    const file = fileInput.files[0];
+                    if (!file) return;
+
+                    const submitButton = form.querySelector('.submit-button');
+                    const progressBar = form.querySelector('.progress-bar');
+                    const progressFill = progressBar.querySelector('.progress-bar-fill');
+
+                    submitButton.disabled = true;
+                    progressBar.style.display = 'block';
+
+                    try {
+                        await this.taskManager.submitTask(this.currentTaskId, file);
+                        modal.style.display = 'none';
+                        await this.loadRecentTasks();
+                    } catch (error) {
+                        alert('Error submitting task. Please try again.');
+                    } finally {
+                        submitButton.disabled = false;
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }
+                });
+            }
+
+            showSubmitModal(taskId) {
+                this.currentTaskId = taskId;
+                const modal = document.querySelector('.submit-task-modal');
+                modal.style.display = 'block';
+            }
+
+            getDeadlineStatus(deadline) {
+                if (!deadline) return { class: 'normal', text: 'No deadline' };
+                
+                const now = new Date();
+                const deadlineDate = new Date(deadline);
+                const diffDays = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
+
+                if (diffDays < 0) {
+                    return { class: 'urgent', text: 'Overdue' };
+                } else if (diffDays <= 2) {
+                    return { class: 'warning', text: `${diffDays} days left` };
+                } else {
+                    return { class: 'normal', text: `${diffDays} days left` };
+                }
+            }
+
+            async loadRecentTasks() {
+                const taskGrid = document.getElementById('taskGrid');
+                try {
+                    const tasks = await this.taskManager.getRecentTasks();
+                    if (tasks.length === 0) {
+                        taskGrid.innerHTML = '<p class="no-tasks">No tasks available at the moment.</p>';
+                        return;
+                    }
+
+                    taskGrid.innerHTML = tasks.map(task => {
+                        const deadlineStatus = this.getDeadlineStatus(task.deadline);
+                        return `
+                            <div class="task-card">
+                                <img src="${this.taskManager.apiUrl}${task.image}" alt="${task.title}" class="task-image">
+                                <h3 class="task-card-title">${task.title}</h3>
+                                <p class="task-card-description">${task.description}</p>
+                                <div class="task-card-meta">
+                                    <span><i class="fas fa-clock"></i> ${this.formatDate(task.createdAt)}</span>
+                                    <span><i class="fas fa-flag"></i> ${task.priority || 'Medium'}</span>
+                                    <span class="deadline-badge ${deadlineStatus.class}">
+                                        <i class="fas fa-calendar-alt"></i> ${deadlineStatus.text}
+                                    </span>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-button view-button" onclick="taskUI.showImagePreview(${JSON.stringify(task)})">
+                                        <i class="fas fa-eye"></i> View Document
+                                    </button>
+                                    <button class="task-button accept-button" onclick="taskUI.acceptTask('${task.id}')">
+                                        <i class="fas fa-check"></i> Accept Task
+                                    </button>
+                                    <button class="task-button submit-button" onclick="taskUI.showSubmitModal('${task.id}')">
+                                        <i class="fas fa-paper-plane"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } catch (error) {
+                    taskGrid.innerHTML = '<p class="error">Error loading tasks</p>';
+                }
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
+        }
+
+        // Initialize the UI when the page loads
+        let taskUI;
+        document.addEventListener('DOMContentLoaded', () => {
+            taskUI = new TaskUI();
+        });
+    </script>
+</body>
+</html>

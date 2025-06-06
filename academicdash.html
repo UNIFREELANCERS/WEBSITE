@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Transcription Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+        .sidebar .logo img {
+            width: 48px;
+            height: 48px;
+        }
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: background 0.2s, color 0.2s;
+            font-weight: 500;
+        }
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+        .sidebar nav a i {
+            font-size: 1.2rem;
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+        .header .header-actions i {
+            font-size: 1.3rem;
+            color: var(--text-main);
+            cursor: pointer;
+            margin-right: 0;
+        }
+        .header .profile {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: var(--accent);
+        }
+        .breadcrumbs {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin: 24px 0 0 0;
+            padding-left: 40px;
+            letter-spacing: 0.5px;
+        }
+        .breadcrumbs span {
+            color: var(--accent);
+            margin: 0 6px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 24px 48px 0 48px;
+            max-width: 1200px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 28px 32px 24px 32px;
+            min-width: 220px;
+            max-width: 100%;
+            margin-top: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid var(--accent);
+        }
+        .card .headline {
+            font-family: 'Merriweather', 'Georgia', serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .card .balance, .card .minutes, .card .earnings {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .withdraw-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: var(--text-main);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 8px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            margin-left: 24px;
+            transition: all 0.3s ease;
+        }
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+        }
+        .card .icon {
+            font-size: 2.2rem;
+            margin-left: 24px;
+        }
+        .icon-green { color: var(--accent-light); }
+        .icon-red { color: var(--accent); }
+        .icon-blue { color: var(--accent); }
+        .news-section {
+            grid-column: 1 / span 2;
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            margin-top: 32px;
+            padding: 0 0 24px 0;
+            border: 2px solid var(--accent);
+        }
+        .news-headline {
+            font-family: 'Merriweather', 'Georgia', serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: var(--accent-bg);
+            color: var(--accent);
+            padding: 12px 32px;
+            border-radius: 18px 18px 0 0;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+        }
+        .news-content {
+            padding: 18px 32px 0 32px;
+        }
+        .news-content .earnings {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        @media (max-width: 1100px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .news-section { grid-column: 1; }
+        }
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; height: 80px; }
+            .sidebar .logo { font-size: 1.2rem; padding: 12px 8px 8px 8px; }
+            .sidebar nav { flex-direction: row; gap: 8px; }
+            .sidebar nav a { font-size: 0.95rem; padding: 10px 10px; margin: 0 4px; }
+            .main { padding: 0; }
+            .dashboard { padding: 16px 4px 0 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">  
+                <span><span style="color:var(--logo-gold);">UNI</span><br><span style="font-size:0.6em;letter-spacing:2px;">FREELANCERS</span></span>
+            </div>
+            <div class="panel-label">ACADEMIC TRANSCRIPTION PANEL</div>
+            <nav>
+                <a href="academicdash.html" class="active"><i class="fa fa-gauge"></i> My dashboard</a>
+                <a href="academicmin.html"><i class="fa fa-pen-nib"></i> Get Minutes</a>
+                <a href="availacadetask.html"><i class="fa fa-list-check"></i> All Available Tasks</a>
+                <a href="#"><i class="fa fa-trophy"></i> Awarded Tasks</a>
+                <a href="#"><i class="fa fa-wallet"></i> My Payouts</a>
+                <a href="#"><i class="fa fa-user-gear"></i> My Profile Settings <i class="fa fa-angle-right" style="margin-left:auto;"></i></a>
+                <a href="#"><i class="fa fa-headset"></i> Support Request</a>
+                <a href="#"><i class="fa fa-bell"></i> Notifications</a>
+            </nav>
+        </aside>
+        <main class="main">
+            <div class="header">
+                <i class="fa fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fa fa-bell"></i>
+                    <i class="fa fa-expand"></i>
+                    <div class="profile"><i class="fa fa-user"></i></div>
+                </div>
+            </div>
+            <div class="breadcrumbs">
+                User <span>&raquo;</span> <b>My Dashboard</b>
+            </div>
+            <div class="dashboard">
+                <div class="card" style="grid-column: 1;">
+                    <div>
+                        <div class="headline">Available Balance</div>
+                        <div class="balance">$0</div>
+                    </div>
+                    <button class="withdraw-btn">Withdraw</button>
+                </div>
+                <div class="card" style="grid-column: 2;">
+                    <div>
+                        <div class="headline">Available Minutes</div>
+                        <div class="minutes">0</div>
+                    </div>
+                    <i class="fa fa-language icon icon-blue"></i>
+                </div>
+                <div class="card" style="grid-column: 1;">
+                    <div>
+                        <div class="headline">Total Minutes Awarded</div>
+                        <div class="minutes">0</div>
+                    </div>
+                    <i class="fa fa-battery-full icon icon-green"></i>
+                </div>
+                <div class="card" style="grid-column: 2;">
+        <div>
+                        <div class="headline">Total Minutes Used</div>
+                        <div class="minutes" style="color:#111;">0</div>
+                    </div>
+                    <i class="fa fa-battery-full icon icon-red"></i>
+                </div>
+                <div class="news-section">
+                    <div class="news-headline">Academic Transcription Professionalism (ATP)</div>
+                    <div class="news-content">
+                        <div style="font-size:1rem;color:#222;line-height:1.6;max-width:600px;">
+                            <b>Academic Transcription Professionalism:</b> Academic transcription is a specialized field requiring accuracy, confidentiality, and a deep understanding of academic language. Professional academic transcribers ensure that lectures, interviews, and research data are converted into clear, accessible, and reliable documents. <br><br>
+                            <b>Why choose a professional academic transcriber?</b>
+                            <ul style="margin:8px 0 0 18px;padding:0;">
+                                <li>Expertise in academic terminology and formatting</li>
+                                <li>Strict adherence to confidentiality and data security</li>
+                                <li>Timely delivery and attention to detail</li>
+                                <li>Support for students, researchers, and educators</li>
+                            </ul>
+                            <br>
+                            <i>Enhance your academic workflow with professional transcription services.</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        </div>
+</body>
+</html>

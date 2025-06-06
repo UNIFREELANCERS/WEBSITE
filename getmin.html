@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Minutes - UNI Medical</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --sidebar-bg: #10102a;
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+            --danger: #ff5252;
+            --success: #4caf50;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0 0 30px 0;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+            z-index: 10;
+            transform: translateZ(20px);
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent);
+            padding: 30px 30px 20px 30px;
+            text-shadow: 0 0 10px var(--accent-bg);
+        }
+
+        .sidebar .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .sidebar .nav a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 30px 0 0 30px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .sidebar .nav a.active, .sidebar .nav a:hover {
+            background: var(--accent);
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 2px 0 10px var(--accent-bg);
+            transform: translateZ(10px);
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: transparent;
+            transform-style: preserve-3d;
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 24px 40px 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            transform: translateZ(30px);
+        }
+
+        .minutes-container {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            transform-style: preserve-3d;
+        }
+
+        .minutes-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(.25,.8,.25,1);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .minutes-card:nth-child(1) {
+            grid-column: span 6;
+            transform: translateZ(20px) rotateY(-4deg);
+        }
+
+        .minutes-card:nth-child(2) {
+            grid-column: span 6;
+            transform: translateZ(30px) rotateY(4deg);
+        }
+
+        .minutes-card:hover {
+            transform: translateY(-15px) translateZ(40px) scale(1.04);
+            box-shadow: 0 20px 40px var(--accent-bg);
+        }
+
+        .minutes-title {
+            font-size: 1.5em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .minutes-desc {
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .minutes-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            color: var(--accent-light);
+            font-size: 0.9em;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-bg);
+        }
+
+        .submit-btn {
+            padding: 14px 28px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--accent-bg);
+        }
+
+        .minutes-info {
+            grid-column: span 12;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 32px 28px;
+            transform: translateZ(25px) rotateX(2deg);
+            box-shadow: var(--shadow);
+        }
+
+        .info-title {
+            font-size: 1.3em;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .info-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-item i {
+            font-size: 1.5em;
+            color: var(--accent);
+        }
+
+        @media (max-width: 1200px) {
+            .minutes-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .minutes-card, .minutes-info {
+                grid-column: span 12 !important;
+            }
+
+            .info-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .purchase-section {
+            width: 100%;
+            margin: 60px 0 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .purchase-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+        }
+        .purchase-card {
+            background: #fff;
+            color: #222;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10);
+            padding: 36px 38px 32px 38px;
+            min-width: 320px;
+            max-width: 370px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+            border: 1.5px solid #f2f2f2;
+            transition: box-shadow 0.3s, transform 0.3s;
+            transform-style: preserve-3d;
+        }
+        .purchase-card:hover {
+            box-shadow: 0 16px 48px 0 rgba(0,188,212,0.18);
+            transform: translateY(-10px) scale(1.03) translateZ(20px);
+        }
+        .purchase-card .plan {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .purchase-card.platinum .plan {
+            color: #0070ff;
+        }
+        .purchase-card .price {
+            font-size: 2em;
+            font-weight: 700;
+            color: #888;
+            margin-bottom: 0;
+            display: flex;
+            align-items: flex-end;
+        }
+        .purchase-card .price sup {
+            font-size: 0.6em;
+            font-weight: 600;
+            margin-left: 2px;
+            color: #bbb;
+        }
+        .purchase-card .minutes {
+            font-size: 1.1em;
+            color: #444;
+            margin: 10px 0 0 0;
+        }
+        .purchase-card .bonus {
+            color: #4caf50;
+            font-size: 1.1em;
+            margin-bottom: 18px;
+            margin-top: 2px;
+        }
+        .purchase-card .purchase-btn {
+            margin-top: 18px;
+            background: #18192a;
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            padding: 14px 48px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .purchase-card .purchase-btn:hover {
+            background: #00bcd4;
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+        }
+        .purchase-card.platinum {
+            border: 2.5px solid #0070ff;
+            box-shadow: 0 8px 32px 0 rgba(0,112,255,0.10);
+        }
+        .purchase-row + .purchase-row {
+            margin-top: 0;
+        }
+        @media (max-width: 900px) {
+            .purchase-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+            .purchase-card {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo"><i class="fas fa-hospital"></i> UNI Medical</div>
+        <nav class="nav">
+            <a href="medicaltask.html"><i class="fas fa-tachometer-alt"></i> My dashboard</a>
+            <a href="getmin.html" class="active"><i class="fas fa-clock"></i> Get Minutes</a>
+            <a href="availtask.html"><i class="fas fa-tasks"></i> All Available Tasks</a>
+            <a href="awardedtask.html"><i class="fas fa-award"></i> Awarded Tasks</a>
+            <a href="#"><i class="fas fa-wallet"></i> My Payouts</a>
+            <a href="#"><i class="fas fa-user-cog"></i> My Profile Settings</a>
+            <a href="#"><i class="fas fa-headset"></i> Support Request</a>
+            <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+        </nav>
+    </aside>
+    <div class="main">
+        <div class="header">
+            <div class="title">Get Minutes
+                <span style="float:right;font-size:1em;color:#00bcd4;font-weight:bold;">Minutes: <span id="user-minutes">0</span></span>
+                <button id="history-btn" style="margin-left:18px;padding:6px 18px;border-radius:6px;border:1px solid #00bcd4;background:transparent;color:#00bcd4;font-weight:bold;cursor:pointer;float:right;">History</button>
+            </div>
+            <div class="user">
+                <i class="fas fa-user-circle"></i> <span>User</span>
+            </div>
+        </div>
+        <div id="notification" style="display:none;position:fixed;top:30px;right:30px;z-index:9999;background:#00bcd4;color:#fff;padding:18px 32px;border-radius:10px;font-size:1.1em;box-shadow:0 4px 24px rgba(0,0,0,0.15);font-weight:bold;"></div>
+        <div id="history-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9998;align-items:center;justify-content:center;">
+            <div style="background:#fff;color:#222;padding:32px 40px;border-radius:16px;max-width:400px;width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.15);position:relative;">
+                <h3 style="margin-top:0;">Minutes History</h3>
+                <ul id="history-list" style="max-height:300px;overflow-y:auto;padding-left:0;list-style:none;"></ul>
+                <button onclick="document.getElementById('history-modal').style.display='none'" style="margin-top:18px;padding:8px 22px;border-radius:8px;border:none;background:#00bcd4;color:#fff;font-weight:bold;cursor:pointer;">Close</button>
+            </div>
+        </div>
+        <div class="minutes-container">
+            <div class="minutes-card">
+                <h2 class="minutes-title">Purchase Minutes</h2>
+                <p class="minutes-desc">Buy minutes to start working on medical tasks and earn rewards.</p>
+                <form class="minutes-form" id="purchase-minutes-form">
+                    <div class="form-group">
+                        <label for="amount">Amount ($)</label>
+                        <input type="number" id="amount" min="1" step="0.01" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="minutes">Minutes to Purchase</label>
+                        <input type="number" id="minutes" min="1" step="1" placeholder="Enter minutes">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment">Payment Method</label>
+                        <select id="payment">
+                            <option value="credit">Credit Card</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="crypto">Cryptocurrency</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Purchase Minutes</button>
+                </form>
+            </div>
+            <div class="minutes-card">
+                <h2 class="minutes-title">Earn Free Minutes</h2>
+                <p class="minutes-desc">Complete tasks and earn free minutes as rewards.</p>
+                <form class="minutes-form">
+                    <div class="form-group">
+                        <label for="task">Select Task</label>
+                        <select id="task">
+                            <option value="transcribe">Transcribe Patient Notes</option>
+                            <option value="report">Surgical Report Entry</option>
+                            <option value="lab">Lab Results Transcription</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hours">Estimated Hours</label>
+                        <input type="number" id="hours" min="1" placeholder="Enter estimated hours">
+                    </div>
+                    <button type="submit" class="submit-btn">Start Task</button>
+                </form>
+            </div>
+            <div class="minutes-info">
+                <h3 class="info-title">Minutes Information</h3>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div>Current Minutes</div>
+                            <div style="font-size: 1.2em; font-weight: bold;">0</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-tasks"></i>
+                        <div>
+                            <div>Tasks Completed</div>
+                            <div style="font-size: 1.2em; font-weight: bold;">0</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <div>Minutes Earned</div>
+                            <div style="font-size: 1.2em; font-weight: bold;">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function getUserMinutes() {
+        return parseInt(localStorage.getItem('userMinutes') || '0', 10);
+    }
+    function setUserMinutes(val) {
+        localStorage.setItem('userMinutes', val);
+        document.getElementById('user-minutes').textContent = val;
+    }
+    function addHistory(type, amount, desc) {
+        var history = JSON.parse(localStorage.getItem('minutesHistory') || '[]');
+        history.push({type, amount, desc, date: new Date().toLocaleString()});
+        localStorage.setItem('minutesHistory', JSON.stringify(history));
+    }
+    function showNotification(msg) {
+        var n = document.getElementById('notification');
+        n.textContent = msg;
+        n.style.display = 'block';
+        setTimeout(()=>{n.style.display='none';}, 2500);
+    }
+    function showHistory() {
+        var modal = document.getElementById('history-modal');
+        var list = document.getElementById('history-list');
+        var history = JSON.parse(localStorage.getItem('minutesHistory') || '[]');
+        list.innerHTML = history.length ? history.map(h=>`<li style='margin-bottom:10px;'>[${h.date}] <b>${h.type}</b>: ${h.amount} min<br><span style='font-size:0.95em;color:#888;'>${h.desc}</span></li>`).reverse().join('') : '<li>No history yet.</li>';
+        modal.style.display = 'flex';
+    }
+    if (localStorage.getItem('userMinutes') === null) setUserMinutes(20);
+    else setUserMinutes(getUserMinutes());
+    document.getElementById('history-btn').onclick = showHistory;
+    document.getElementById('purchase-minutes-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var minutes = parseInt(document.getElementById('minutes').value, 10);
+        if (isNaN(minutes) || minutes <= 0) {
+            showNotification('Please enter a valid number of minutes to purchase.');
+            return;
+        }
+        // Placeholder for real payment integration
+        // Here you would call your payment API and only proceed if payment is successful
+        // For now, we simulate a successful purchase
+        var current = getUserMinutes();
+        setUserMinutes(current + minutes);
+        addHistory('Purchased', minutes, 'Purchased minutes');
+        showNotification('Purchase successful! You now have ' + (current + minutes) + ' minutes.');
+        setTimeout(function(){ window.location.href = 'availtask.html'; }, 1200);
+    });
+    </script>
+</body>
+</html>
+

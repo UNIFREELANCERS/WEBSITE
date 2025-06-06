@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Medical Tasks - UNI Freelancers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .task-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .task-details {
+            margin: 1rem 0;
+        }
+
+        .task-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .task-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .accept-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .accept-button:hover {
+            background: var(--accent-light);
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-high { background: #ff4444; color: white; }
+        .priority-medium { background: #ffbb33; color: black; }
+        .priority-low { background: #00C851; color: white; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-tasks {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .error {
+            text-align: center;
+            padding: 3rem;
+            color: #ff4444;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+        }
+
+        .specialization-tag {
+            background: var(--accent-bg);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Available Medical Transcription Tasks</h1>
+            <p>Select a task to start transcribing</p>
+        </div>
+        <div id="tasksGrid" class="tasks-grid">
+            <div class="loading">Loading available tasks...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import AudioFileManager from './cms-integration.js';
+
+        class MedicalTasksUI {
+            constructor() {
+                this.audioManager = new AudioFileManager();
+                this.tasksGrid = document.getElementById('tasksGrid');
+                this.loadTasks();
+            }
+
+            async loadTasks() {
+                try {
+                    const response = await this.audioManager.getAvailableMedicalTasks();
+                    const tasks = response.data || [];
+
+                    if (tasks.length === 0) {
+                        this.tasksGrid.innerHTML = `
+                            <div class="no-tasks">
+                                <i class="fas fa-info-circle"></i>
+                                No medical transcription tasks available at the moment.
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    this.tasksGrid.innerHTML = tasks.map(task => `
+                        <div class="task-card" data-task-id="${task.id}">
+                            <div class="task-header">
+                                <div class="task-icon">
+                                    <i class="fas fa-file-medical"></i>
+                                </div>
+                                <h3 class="task-title">${task.attributes.title}</h3>
+                            </div>
+                            <div class="task-details">
+                                <div class="task-detail">
+                                    <i class="fas fa-clock"></i>
+                                    ${task.attributes.estimatedDuration} minutes
+                                </div>
+                                <div class="task-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    Due: ${new Date(task.attributes.deadline).toLocaleDateString()}
+                                </div>
+                                <div class="task-detail">
+                                    <span class="priority-badge priority-${task.attributes.priority}">
+                                        ${task.attributes.priority.toUpperCase()}
+                                    </span>
+                                </div>
+                                <div class="task-detail">
+                                    ${task.attributes.specialization ? `
+                                        <span class="specialization-tag">
+                                            <i class="fas fa-stethoscope"></i>
+                                            ${task.attributes.specialization}
+                                        </span>
+                                    ` : ''}
+                                </div>
+                                <div class="task-detail">
+                                    <p>${task.attributes.description}</p>
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="accept-button" onclick="medicalTasksUI.acceptTask('${task.id}')">
+                                    <i class="fas fa-check"></i>
+                                    Accept Task
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error loading tasks:', error);
+                    this.tasksGrid.innerHTML = `
+                        <div class="error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Error loading tasks. Please try again later.
+                        </div>
+                    `;
+                }
+            }
+
+            async acceptTask(taskId) {
+                try {
+                    await this.audioManager.acceptTask(taskId, 'medical');
+                    alert('Task accepted successfully!');
+                    this.loadTasks(); // Refresh the task list
+                } catch (error) {
+                    console.error('Error accepting task:', error);
+                    alert('Error accepting task. Please try again.');
+                }
+            }
+        }
+
+        // Initialize the UI
+        window.medicalTasksUI = new MedicalTasksUI();
+    </script>
+</body>
+</html> 

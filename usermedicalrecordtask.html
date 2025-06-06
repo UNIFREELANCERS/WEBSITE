@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI Freelancers - User Medical Record Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: linear-gradient(135deg, #0a0a2a 0%, #000000 100%);
+            --card-bg: linear-gradient(135deg, #0a0a2a 60%, #000000 100%);
+            --text-main: #ffffff;
+            --accent: #00bcd4;
+            --accent-light: #4dd0e1;
+            --accent-bg: rgba(0, 188, 212, 0.1);
+            --border: #1a1a4a;
+            --shadow: 0 4px 24px 0 rgba(0, 188, 212, 0.2);
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 32px 24px 16px 24px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+        .sidebar .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: var(--accent);
+            font-family: 'Georgia', serif;
+        }
+        .sidebar .logo-text span {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        .sidebar .panel-label {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 18px 0 10px 32px;
+            letter-spacing: 1px;
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 0;
+        }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 32px;
+            margin: 0 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .sidebar nav a.active, .sidebar nav a:hover {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--main-bg);
+        }
+        .header {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            height: 72px;
+            position: relative;
+        }
+        .header .menu-icon {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-left: 24px;
+            cursor: pointer;
+        }
+        .header .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 32px;
+        }
+        .top-nav {
+            background: var(--card-bg);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .top-nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .top-nav a:hover, .top-nav a.active {
+            background: var(--accent-bg);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .content {
+            padding: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .task-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .task-card:hover {
+            transform: translateY(-5px);
+        }
+        .task-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+        .image-carousel {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        .carousel-image {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .carousel-arrow:hover {
+            background: var(--accent);
+        }
+        .carousel-prev {
+            left: 10px;
+        }
+        .carousel-next {
+            right: 10px;
+        }
+        .download-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .task-image-container:hover .download-overlay {
+            opacity: 1;
+        }
+        .download-btn {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            background: var(--accent-light);
+            transform: scale(1.05);
+        }
+        .task-content {
+            padding: 20px;
+        }
+        .task-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .task-description {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .task-price {
+            color: var(--accent-light);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .task-deadline {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .task-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .task-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .task-btn:hover {
+            background: var(--accent);
+            color: var(--text-main);
+        }
+        .task-btn.primary {
+            background: var(--accent);
+            color: var(--text-main);
+        }
+        .task-btn.primary:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+        }
+        .task-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: var(--accent-bg);
+            color: var(--accent);
+        }
+        .task-status.completed {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+        .task-status.in-progress {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+        .task-details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+            border: 2px solid var(--accent);
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .modal-header {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-header h2 {
+            color: var(--accent);
+            margin: 0;
+        }
+        .task-info {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .info-label {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .info-value {
+            color: var(--text-main);
+        }
+        .download-all-btn {
+            background: var(--accent);
+            color: var(--text-main);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+        .download-all-btn:hover {
+            background: var(--accent-light);
+            transform: scale(1.05);
+        }
+        .countdown-timer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--accent-bg);
+            border-radius: 20px;
+            margin-top: 12px;
+        }
+        .countdown-timer i {
+            color: var(--accent);
+        }
+        .countdown-value {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .countdown-warning {
+            color: #ff9800;
+        }
+        .countdown-danger {
+            color: #f44336;
+        }
+        .task-progress {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .progress-fill.warning {
+            background: #ff9800;
+        }
+        .progress-fill.danger {
+            background: #f44336;
+        }
+        .get-started-btn i {
+            margin-right: 8px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar .logo {
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+
+            .sidebar .panel-label {
+                margin: 10px 0 5px 15px;
+                font-size: 0.9rem;
+            }
+
+            .sidebar nav {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .sidebar nav a {
+                padding: 10px 15px;
+                margin: 5px 0;
+                font-size: 0.9rem;
+            }
+
+            .main {
+                margin-top: 60px;
+            }
+
+            .header {
+                height: 60px;
+                padding: 0 15px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.5rem;
+            }
+
+            .header .header-actions {
+                gap: 15px;
+                padding-right: 15px;
+            }
+
+            .top-nav {
+                padding: 10px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .top-nav a {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 12px;
+            }
+
+            li {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+                padding-left: 20px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .get-started-btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .task-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .task-card {
+                padding: 20px;
+            }
+
+            .task-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .task-info h3 {
+                font-size: 1.2rem;
+            }
+
+            .task-info p {
+                font-size: 0.9rem;
+            }
+
+            .task-details {
+                font-size: 0.9rem;
+            }
+
+            .task-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .action-button {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .sidebar .logo {
+                font-size: 1.1rem;
+            }
+
+            .sidebar nav a {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+
+            .header {
+                height: 50px;
+            }
+
+            .header .menu-icon {
+                font-size: 1.3rem;
+            }
+
+            .top-nav {
+                padding: 8px;
+            }
+
+            .top-nav a {
+                font-size: 0.85rem;
+                padding: 5px 10px;
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            p, li {
+                font-size: 0.85rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+
+            .get-started-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .task-card {
+                padding: 15px;
+            }
+
+            .task-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .task-info p {
+                font-size: 0.85rem;
+            }
+
+            .task-details {
+                font-size: 0.85rem;
+            }
+
+            .action-button {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+
+            .search-bar input {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .filter-group label {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.sidebar') && !event.target.closest('.menu-icon')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-hospital"></i>
+                <div class="logo-text">
+                    UNI Medical
+                    <span>Freelancer Platform</span>
+                </div>
+            </div>
+            <div class="panel-label">MAIN MENU</div>
+            <nav>
+                <a href="First.html"><i class="fas fa-home"></i> Home</a>
+                <a href="medical.html"><i class="fas fa-hospital"></i> Medical</a>
+                <a href="data.html"><i class="fas fa-database"></i> Record Keeping</a>
+                <a href="legal.html"><i class="fas fa-gavel"></i> Legal</a>
+                <a href="education.html"><i class="fas fa-graduation-cap"></i> Education</a>
+            </nav>
+        </div>
+        <div class="main">
+            <div class="header">
+                <i class="fas fa-bars menu-icon"></i>
+                <div class="header-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <div class="profile">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="top-nav">
+                <a href="#" class="active"><i class="fas fa-tasks"></i>Medical Tasks</a>
+                <a href="#"><i class="fas fa-trophy"></i>Awarded Medical Tasks</a>
+                <a href="#"><i class="fas fa-money-bill-wave"></i>My Payouts</a>
+                <a href="#"><i class="fas fa-question-circle"></i>Help</a>
+            </div>
+            <div class="content">
+                <div class="task-grid" id="taskGrid">
+                    <!-- Tasks will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        // Function to calculate days left
+        function getDaysLeft(deadline) {
+            const today = new Date();
+            const deadlineDate = new Date(deadline);
+            const diffTime = deadlineDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        }
+
+        // Function to calculate time remaining
+        function calculateTimeRemaining(deadline) {
+            const now = new Date();
+            const deadlineDate = new Date(deadline);
+            const diff = deadlineDate - now;
+            
+            if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            return { days, hours, minutes, seconds };
+        }
+
+        // Function to format countdown
+        function formatCountdown(timeRemaining) {
+            const { days, hours, minutes, seconds } = timeRemaining;
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Function to create task card
+        function createTaskCard(task) {
+            const daysLeft = getDaysLeft(task.deadline);
+            const status = task.status || 'Available';
+            const isCompleted = status === 'Completed';
+            const isInProgress = status === 'In Progress';
+            
+            return `
+                <div class="task-card" data-task-id="${task.id}">
+                    <div class="task-image-container">
+                        <div class="image-carousel" id="carousel-${task.id}">
+                            ${task.images.map(image => `
+                                <img src="${image.url}" alt="${task.title}" class="carousel-image">
+                            `).join('')}
+                        </div>
+                        <div class="carousel-nav" id="nav-${task.id}">
+                            ${task.images.map((_, index) => `
+                                <div class="carousel-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
+                            `).join('')}
+                        </div>
+                        ${task.images.length > 1 ? `
+                            <button class="carousel-arrow carousel-prev" onclick="prevImage('${task.id}')">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-arrow carousel-next" onclick="nextImage('${task.id}')">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        ` : ''}
+                        <div class="download-overlay">
+                            <button class="download-btn" onclick="downloadFormatDoc('${task.id}')">
+                                <i class="fas fa-download"></i>Download Format
+                            </button>
+                        </div>
+                        <div class="task-status ${status.toLowerCase().replace(' ', '-')}">${status}</div>
+                    </div>
+                    <div class="task-content">
+                        <h3 class="task-title">${task.title}</h3>
+                        <p class="task-description">${task.description}</p>
+                        <div class="task-meta">
+                            <span class="task-price">$${task.price}</span>
+                            <span class="task-deadline">
+                                <i class="fas fa-clock"></i> 
+                                ${isCompleted ? 'Completed' : `${daysLeft} days left`}
+                            </span>
+                        </div>
+                        ${isInProgress ? `
+                            <div class="countdown-timer" id="countdown-${task.id}">
+                                <i class="fas fa-clock"></i>
+                                <span class="countdown-value">Loading...</span>
+                            </div>
+                            <div class="task-progress">
+                                <div class="progress-bar" id="progress-${task.id}">
+                                    <div class="progress-fill"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="task-actions">
+                            <button class="task-btn" onclick="showTaskDetails('${task.id}')">
+                                <i class="fas fa-info-circle"></i>Details
+                            </button>
+                            ${!isCompleted && !isInProgress ? `
+                                <button class="task-btn primary" onclick="acceptTask('${task.id}')">
+                                    <i class="fas fa-check"></i>Accept Task
+                                </button>
+                            ` : `
+                                <button class="task-btn primary" disabled>
+                                    <i class="fas fa-check"></i>${isCompleted ? 'Task Completed' : 'Task Accepted'}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Carousel functionality
+        let carouselStates = {};
+
+        function initCarousel(taskId, imageCount) {
+            carouselStates[taskId] = {
+                currentIndex: 0,
+                totalImages: imageCount
+            };
+        }
+
+        function updateCarousel(taskId) {
+            const state = carouselStates[taskId];
+            const carousel = document.getElementById(`carousel-${taskId}`);
+            const dots = document.querySelectorAll(`#nav-${taskId} .carousel-dot`);
+            
+            carousel.style.transform = `translateX(-${state.currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === state.currentIndex);
+            });
+        }
+
+        function nextImage(taskId) {
+            const state = carouselStates[taskId];
+            state.currentIndex = (state.currentIndex + 1) % state.totalImages;
+            updateCarousel(taskId);
+        }
+
+        function prevImage(taskId) {
+            const state = carouselStates[taskId];
+            state.currentIndex = (state.currentIndex - 1 + state.totalImages) % state.totalImages;
+            updateCarousel(taskId);
+        }
+
+        // Function to load tasks
+        function loadTasks() {
+            const taskGrid = document.getElementById('taskGrid');
+            const tasks = JSON.parse(localStorage.getItem('medicalTasks') || '[]');
+            
+            taskGrid.innerHTML = tasks.map(task => createTaskCard(task)).join('');
+            
+            // Initialize carousels
+            tasks.forEach(task => {
+                if (task.images && task.images.length > 0) {
+                    initCarousel(task.id, task.images.length);
+                }
+                // Start countdown for in-progress tasks
+                if (task.status === 'In Progress') {
+                    setInterval(() => updateCountdown(task.id), 1000);
+                }
+            });
+        }
+
+        // Function to accept task
+        function acceptTask(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('medicalTasks') || '[]');
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex !== -1) {
+                tasks[taskIndex].status = 'In Progress';
+                tasks[taskIndex].acceptedDate = new Date().toISOString();
+                localStorage.setItem('medicalTasks', JSON.stringify(tasks));
+                loadTasks();
+                
+                // Start countdown for this task
+                setInterval(() => updateCountdown(taskId), 1000);
+                
+                alert('Task accepted successfully! The countdown has started.');
+            }
+        }
+
+        // Function to show task details in modal
+        function showTaskDetails(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('medicalTasks') || '[]');
+            const task = tasks.find(task => task.id === taskId);
+            
+            if (task) {
+                const modal = document.createElement('div');
+                modal.className = 'task-details-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <button class="modal-close" onclick="this.closest('.task-details-modal').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="modal-header">
+                            <h2>${task.title}</h2>
+                        </div>
+                        <div class="task-info">
+                            <div class="info-group">
+                                <span class="info-label">Description</span>
+                                <span class="info-value">${task.description}</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Price</span>
+                                <span class="info-value">$${task.price}</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Deadline</span>
+                                <span class="info-value">${formatDate(task.deadline)}</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Submission Email</span>
+                                <span class="info-value">${task.submissionEmail}</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Status</span>
+                                <span class="info-value">${task.status}</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Upload Date</span>
+                                <span class="info-value">${formatDate(task.uploadDate)}</span>
+                            </div>
+                        </div>
+                        <button class="download-all-btn" onclick="downloadAllImages('${taskId}')">
+                            <i class="fas fa-download"></i>Download All Images
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.style.display = 'block';
+            }
+        }
+
+        // Function to download all images
+        async function downloadAllImages(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('medicalTasks') || '[]');
+            const task = tasks.find(task => task.id === taskId);
+            
+            if (task && task.images) {
+                // Create a zip file
+                const zip = new JSZip();
+                
+                // Add each image to the zip
+                task.images.forEach((image, index) => {
+                    const imageData = image.url.split(',')[1]; // Remove data URL prefix
+                    zip.file(`image_${index + 1}.jpg`, imageData, {base64: true});
+                });
+                
+                // Generate and download the zip
+                const content = await zip.generateAsync({type: 'blob'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = `${task.title}_images.zip`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Function to download format document
+        function downloadFormatDoc(taskId) {
+            const tasks = JSON.parse(localStorage.getItem('medicalTasks') || '[]');
+            const task = tasks.find(task => task.id === taskId);
+            
+            if (task && task.formatDoc) {
+                const link = document.createElement('a');
+                link.href = task.formatDoc.data;
+                link.download = task.formatDoc.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Function to update countdown
+        function updateCountdown(taskId) {
+            const task = JSON.parse(localStorage.getItem('medicalTasks') || '[]')
+                .find(task => task.id === taskId);
+            
+            if (!task || task.status !== 'In Progress') return;
+            
+            const timeRemaining = calculateTimeRemaining(task.deadline);
+            const countdownElement = document.querySelector(`#countdown-${taskId}`);
+            const progressElement = document.querySelector(`#progress-${taskId}`);
+            
+            if (countdownElement) {
+                const totalSeconds = (new Date(task.deadline) - new Date(task.acceptedDate)) / 1000;
+                const remainingSeconds = (new Date(task.deadline) - new Date()) / 1000;
+                const progress = (remainingSeconds / totalSeconds) * 100;
+                
+                countdownElement.innerHTML = `
+                    <i class="fas fa-clock"></i>
+                    <span class="countdown-value ${progress < 25 ? 'countdown-danger' : progress < 50 ? 'countdown-warning' : ''}">
+                        ${formatCountdown(timeRemaining)}
+                    </span>
+                `;
+                
+                if (progressElement) {
+                    const progressFill = progressElement.querySelector('.progress-fill');
+                    progressFill.style.width = `${progress}%`;
+                    progressFill.className = `progress-fill ${progress < 25 ? 'danger' : progress < 50 ? 'warning' : ''}`;
+                }
+            }
+        }
+
+        // Add click handlers for carousel dots
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('carousel-dot')) {
+                const taskId = e.target.closest('.task-card').dataset.taskId;
+                const index = parseInt(e.target.dataset.index);
+                carouselStates[taskId].currentIndex = index;
+                updateCarousel(taskId);
+            }
+        });
+
+        // Load tasks when page loads
+        document.addEventListener('DOMContentLoaded', loadTasks);
+    </script>
+
+    <!-- Add JSZip library for zip functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+</html>
